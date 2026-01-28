@@ -24,7 +24,7 @@ from tonie_api.cli.commands import (
 from tonie_api.cli.i18n import load_locale
 
 
-@click.group()
+@click.group(invoke_without_command=True)
 @click.option(
     "--username",
     "-u",
@@ -54,7 +54,10 @@ def cli(  # noqa: PLR0913
     debug: bool,
     lang: str,
 ) -> None:
-    """Tonie Cloud CLI - Manage your Creative Tonies from the command line."""
+    """Tonie Cloud CLI - Manage your Creative Tonies from the command line.
+
+    Run without arguments to start the interactive TUI.
+    """
     # Load locale
     load_locale(lang)
 
@@ -71,6 +74,12 @@ def cli(  # noqa: PLR0913
     ctx.obj["json"] = json_output
     ctx.obj["debug"] = debug
     ctx.obj["lang"] = lang
+
+    # If no subcommand provided, launch TUI
+    if ctx.invoked_subcommand is None:
+        from tonie_api.tui import main as tui_main
+
+        tui_main()
 
 
 # Register commands

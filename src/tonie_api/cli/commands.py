@@ -549,51 +549,14 @@ def preset_delete(ctx: click.Context, name: str, yes: bool) -> None:
 
 @click.command()
 @click.pass_context
-def interactive(ctx: click.Context) -> None:
-    """Interactive mode with menu navigation."""
-    try:
-        api = get_api(ctx)
-        households_list = api.get_households()
-        if not households_list:
-            print_error(t("cli.error.no_households"))
-            ctx.exit(1)
-            return
+def interactive(ctx: click.Context) -> None:  # noqa: ARG001
+    """Start interactive TUI mode.
 
-        household_id = households_list[0].id
+    Launches the Textual-based terminal user interface.
+    """
+    from tonie_api.tui import main as tui_main
 
-        while True:
-            action = questionary.select(
-                t("cli.interactive.prompt"),
-                choices=[
-                    t("cli.interactive.show_tonies"),
-                    t("cli.interactive.upload"),
-                    t("cli.interactive.shuffle"),
-                    t("cli.interactive.clear_chapters"),
-                    t("cli.interactive.run_preset"),
-                    t("cli.interactive.exit"),
-                ],
-            ).ask()
-
-            if action is None or action == t("cli.interactive.exit"):
-                click.echo(t("cli.interactive.goodbye"))
-                break
-
-            if action == t("cli.interactive.show_tonies"):
-                _interactive_show_tonies(api, household_id, ctx)
-            elif action == t("cli.interactive.upload"):
-                _interactive_upload(api, household_id, ctx)
-            elif action == t("cli.interactive.shuffle"):
-                _interactive_shuffle(api, household_id)
-            elif action == t("cli.interactive.clear_chapters"):
-                _interactive_clear(api, household_id)
-            elif action == t("cli.interactive.run_preset"):
-                _interactive_run_preset(api)
-
-            click.echo()
-
-    except TonieAPIError as e:
-        print_error(t("cli.error.api", error=str(e)))
-        ctx.exit(1)
+    tui_main()
 
 
 def _interactive_show_tonies(api: TonieAPI, household_id: str, ctx: click.Context) -> None:

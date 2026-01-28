@@ -128,3 +128,102 @@ cli:
     api: "API Error: {error}"
     preset: "Preset Error: {error}"
     no_households: "No households found"
+
+tui:
+  login:
+    title: "Tonie Cloud Login"
+    email: "Email address"
+    password: "Password"
+    submit: "Sign in"
+    verifying: "Verifying credentials..."
+    invalid_creds: "Invalid credentials. Please check email and password."
+    connection_error: "Connection error: {error}"
+    footer: "Tab: Next | Enter: Sign in | Esc: Quit"
+
+  dashboard:
+    title: "Tonie Cloud"
+    home: "Home"
+    tonies: "Tonies"
+    upload: "Upload"
+    presets: "Presets"
+    settings: "Settings"
+    logout: "Logout"
+    footer: "1-5: Navigate | R: Refresh | Q: Logout | ?: Help"
+
+  home:
+    welcome: "Welcome to Tonie Cloud!"
+    user_section: "User"
+    stats_section: "Statistics"
+    households: "Households"
+    creative_tonies: "Creative Tonies"
+    total_chapters: "Total chapters"
+    total_duration: "Total duration"
+    free_space: "Free space"
+    shortcuts_section: "Keyboard shortcuts"
+
+  tonies:
+    title: "Creative Tonies"
+    select_household: "Select household"
+    refresh: "Refresh"
+    no_selection: "Select a Tonie from the list"
+    chapters_for: "Chapters for \"{name}\":"
+    shuffle: "Shuffle"
+    clear: "Clear"
+    upload: "Upload"
+    shuffle_success: "Shuffled chapters on \"{name}\""
+    clear_success: "Cleared chapters from \"{name}\""
+    clear_confirm: "Clear {count} chapters from \"{name}\"?"
+    min_chapters: "At least 2 chapters required for shuffling"
+    no_chapters: "No chapters to clear"
+    select_first: "Please select a Tonie first"
+
+  upload:
+    title: "Upload audio files"
+    select_tonie: "Select Tonie..."
+    files: "Files:"
+    selected: "Selected:"
+    total: "Total: {count} files, {size} MB"
+    uploading: "Uploading: {filename} ({current}/{total})"
+    complete: "Done: {count} files uploaded"
+    partial_fail: "Done: {success} uploaded, {failed} failed"
+    no_files: "No files selected"
+    no_tonie: "Please select a Tonie first"
+    cannot_cancel: "Upload cannot be cancelled. Please wait..."
+
+  settings:
+    title: "Settings"
+    config_title: "Backend Configuration"
+    status_title: "API Status"
+    check_status: "Check status"
+    connected: "Connected"
+    not_reachable: "Not reachable"
+    latency: "Latency: {latency}ms"
+
+  presets:
+    title: "Presets"
+    refresh: "Refresh"
+    run: "Run"
+    delete: "Delete"
+    empty: "No presets found."
+    create_hint: "Create presets with: toniebox preset create <name>"
+    running: "Starting preset \"{name}\"..."
+    success: "Preset \"{name}\": {success}/{total} actions successful"
+    partial_fail: "Preset \"{name}\": {success}/{total} successful"
+    delete_confirm: "Delete preset \"{name}\" with {count} actions?"
+    deleted: "Preset \"{name}\" deleted"
+    select_first: "Please select a preset first"
+
+  error:
+    title: "Error"
+    session_expired: "Session expired. Please sign in again."
+
+  confirm:
+    title: "Confirm"
+    logout: "Do you really want to log out?"
+    yes: "Yes"
+    no: "No"
+
+  help:
+    title: "Help"
+    navigation: "Navigation:"
+    actions: "Actions:"

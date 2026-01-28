@@ -1,0 +1,484 @@
+/* Tonie Cloud TUI Stylesheet */
+
+/* Global styles */
+Screen {
+    background: $surface;
+}
+
+/* Login Screen */
+LoginScreen {
+    align: center middle;
+}
+
+#login-container {
+    width: 60;
+    height: auto;
+    border: solid $primary;
+    padding: 1 2;
+    background: $surface;
+}
+
+#login-title {
+    text-align: center;
+    text-style: bold;
+    color: $primary;
+    padding-bottom: 1;
+}
+
+#login-error {
+    color: $error;
+    text-align: center;
+    padding: 1 0;
+}
+
+.login-label {
+    padding-top: 1;
+}
+
+#login-input-email,
+#login-input-password {
+    margin-bottom: 1;
+}
+
+#login-button {
+    margin-top: 1;
+    width: 100%;
+}
+
+#login-footer {
+    text-align: center;
+    color: $text-muted;
+    padding-top: 1;
+}
+
+/* Dashboard Screen */
+DashboardScreen {
+    layout: horizontal;
+}
+
+#dashboard-sidebar {
+    width: 24;
+    height: 100%;
+    background: $panel;
+    border-right: solid $primary-background;
+}
+
+#dashboard-content {
+    width: 1fr;
+    height: 100%;
+}
+
+#dashboard-header {
+    dock: top;
+    height: 3;
+    background: $primary;
+    color: $text;
+    padding: 0 2;
+    content-align: center middle;
+}
+
+#header-title {
+    text-style: bold;
+}
+
+#header-user {
+    dock: right;
+    padding-right: 2;
+}
+
+#dashboard-footer {
+    dock: bottom;
+    height: 1;
+    background: $primary-background;
+    color: $text-muted;
+    padding: 0 1;
+}
+
+/* Sidebar */
+Sidebar {
+    height: 100%;
+    padding: 1;
+}
+
+.sidebar-title {
+    text-style: bold;
+    color: $primary;
+    padding-bottom: 1;
+}
+
+.nav-item {
+    padding: 0 1;
+    height: 3;
+    content-align: left middle;
+}
+
+.nav-item:hover {
+    background: $primary-background;
+}
+
+.nav-item.-active {
+    background: $primary;
+    color: $text;
+}
+
+.nav-item.-danger {
+    color: $error;
+}
+
+.nav-item.-danger:hover {
+    background: $error;
+    color: $text;
+}
+
+/* Home View */
+HomeView {
+    padding: 1 2;
+}
+
+.home-title {
+    text-style: bold;
+    padding-bottom: 1;
+}
+
+.home-section {
+    padding: 1 0;
+}
+
+.home-stat {
+    padding: 0 2;
+}
+
+.stat-label {
+    color: $text-muted;
+}
+
+.stat-value {
+    text-style: bold;
+}
+
+/* Tonies Screen */
+ToniesScreen {
+    layout: vertical;
+    padding: 1;
+}
+
+#tonies-header {
+    height: 3;
+    layout: horizontal;
+    padding-bottom: 1;
+}
+
+#household-select {
+    width: 40;
+}
+
+#refresh-button {
+    margin-left: 2;
+}
+
+#tonies-table {
+    height: 1fr;
+    border: solid $primary-background;
+}
+
+#tonie-details {
+    height: auto;
+    max-height: 50%;
+    border: solid $primary-background;
+    margin-top: 1;
+    padding: 1;
+}
+
+#details-title {
+    text-style: bold;
+    padding-bottom: 1;
+}
+
+#tonies-actions {
+    height: 3;
+    layout: horizontal;
+    padding-top: 1;
+}
+
+#tonies-actions Button {
+    margin-right: 1;
+}
+
+/* Chapter List */
+ChapterList {
+    height: auto;
+    max-height: 15;
+    border: solid $primary-background;
+}
+
+.chapter-item {
+    padding: 0 1;
+}
+
+.chapter-duration {
+    color: $text-muted;
+    dock: right;
+}
+
+/* Upload Screen */
+UploadScreen {
+    layout: vertical;
+    padding: 1;
+}
+
+#upload-header {
+    height: 3;
+    layout: horizontal;
+}
+
+#upload-tonie-select {
+    width: 40;
+}
+
+#upload-content {
+    height: 1fr;
+    layout: horizontal;
+    margin-top: 1;
+}
+
+#file-browser {
+    width: 50%;
+    border: solid $primary-background;
+    padding: 1;
+}
+
+#selected-files {
+    width: 50%;
+    border: solid $primary-background;
+    margin-left: 1;
+    padding: 1;
+}
+
+#selected-files-title {
+    text-style: bold;
+    padding-bottom: 1;
+}
+
+#upload-progress {
+    height: auto;
+    padding: 1 0;
+}
+
+#progress-bar {
+    height: 1;
+    margin-bottom: 1;
+}
+
+#progress-text {
+    color: $text-muted;
+}
+
+#upload-actions {
+    height: 3;
+    layout: horizontal;
+}
+
+#upload-actions Button {
+    margin-right: 1;
+}
+
+/* Settings Screen */
+SettingsScreen {
+    padding: 1 2;
+}
+
+.settings-section {
+    padding: 1 0;
+    border-bottom: solid $primary-background;
+}
+
+.settings-title {
+    text-style: bold;
+    color: $primary;
+    padding-bottom: 1;
+}
+
+.settings-row {
+    layout: horizontal;
+    padding: 0 1;
+}
+
+.settings-label {
+    width: 20;
+    color: $text-muted;
+}
+
+.settings-value {
+    width: 1fr;
+}
+
+#status-indicator {
+    padding: 1 0;
+}
+
+.status-ok {
+    color: $success;
+}
+
+.status-error {
+    color: $error;
+}
+
+/* Presets Screen */
+PresetsScreen {
+    padding: 1;
+}
+
+#presets-header {
+    height: 3;
+    layout: horizontal;
+    padding-bottom: 1;
+}
+
+#presets-table {
+    height: 1fr;
+    border: solid $primary-background;
+}
+
+#presets-actions {
+    height: 3;
+    layout: horizontal;
+    padding-top: 1;
+}
+
+#presets-actions Button {
+    margin-right: 1;
+}
+
+/* Error Modal */
+ErrorModal {
+    align: center middle;
+}
+
+#error-dialog {
+    width: 60;
+    height: auto;
+    border: solid $error;
+    padding: 1 2;
+    background: $surface;
+}
+
+#error-title {
+    text-style: bold;
+    color: $error;
+    padding-bottom: 1;
+}
+
+#error-message {
+    padding: 1 0;
+}
+
+#error-button {
+    margin-top: 1;
+    width: 100%;
+}
+
+/* Confirm Modal */
+ConfirmModal {
+    align: center middle;
+}
+
+#confirm-dialog {
+    width: 50;
+    height: auto;
+    border: solid $warning;
+    padding: 1 2;
+    background: $surface;
+}
+
+#confirm-title {
+    text-style: bold;
+    color: $warning;
+    padding-bottom: 1;
+}
+
+#confirm-message {
+    padding: 1 0;
+}
+
+#confirm-buttons {
+    layout: horizontal;
+    margin-top: 1;
+}
+
+#confirm-buttons Button {
+    width: 50%;
+}
+
+#confirm-yes {
+    margin-right: 1;
+}
+
+/* Loading indicator */
+LoadingIndicator {
+    content-align: center middle;
+}
+
+/* Toast notifications */
+Toast {
+    margin: 1 2;
+}
+
+/* DataTable customization */
+DataTable {
+    height: 100%;
+}
+
+DataTable > .datatable--cursor {
+    background: $primary;
+    color: $text;
+}
+
+/* Input styling */
+Input {
+    border: solid $primary-background;
+}
+
+Input:focus {
+    border: solid $primary;
+}
+
+/* Button styling */
+Button {
+    min-width: 12;
+}
+
+Button.-primary {
+    background: $primary;
+}
+
+Button.-success {
+    background: $success;
+}
+
+Button.-warning {
+    background: $warning;
+}
+
+Button.-error {
+    background: $error;
+}
+
+/* Select styling */
+Select {
+    width: 100%;
+}
+
+/* ProgressBar styling */
+ProgressBar {
+    height: 1;
+}
+
+ProgressBar > .bar--bar {
+    background: $primary;
+}
+
+/* DirectoryTree styling */
+DirectoryTree {
+    height: 100%;
+}

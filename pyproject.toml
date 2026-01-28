@@ -26,6 +26,7 @@ click = "^8.1.0"
 rich = "^13.7"
 questionary = "^2.0"
 pyyaml = "^6.0"
+textual = "^0.47.0"
 
 [tool.poetry.scripts]
 toniebox = "tonie_api.cli.main:cli"
@@ -36,6 +37,7 @@ pytest-cov = "^4.1"
 ruff = "^0.8.3"
 responses = ">=0.23.3,<0.26.0"
 pre-commit = "^4.0.1"
+textual-dev = "^1.4.0"
 
 [tool.poetry.group.docs]
 optional = true
@@ -133,6 +135,8 @@ target-version = "py312"
 "src/tonie_api/api.py" = ["ANN003"]
 "src/tonie_api/models.py" = ["D101", "A003", "N815", "UP007"]
 "src/tonie_api/cli/*.py" = ["FBT001", "TRY003", "EM101"]
+"src/tonie_api/tui/*.py" = ["FBT001", "TRY003", "EM101"]
+"src/tonie_api/tui/**/*.py" = ["FBT001", "TRY003", "EM101"]
 "tests/*.py" = ["D", "A", "ANN", "S", "SLF", "PLR2004", "COM812", "UP017"]
 
 [tool.ruff.lint.pydocstyle]

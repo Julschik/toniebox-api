@@ -128,3 +128,102 @@ cli:
     api: "API-Fehler: {error}"
     preset: "Preset-Fehler: {error}"
     no_households: "Keine Haushalte gefunden"
+
+tui:
+  login:
+    title: "Tonie Cloud Login"
+    email: "E-Mail-Adresse"
+    password: "Passwort"
+    submit: "Anmelden"
+    verifying: "Überprüfe Zugangsdaten..."
+    invalid_creds: "Ungültige Zugangsdaten. Bitte E-Mail und Passwort überprüfen."
+    connection_error: "Verbindungsfehler: {error}"
+    footer: "Tab: Weiter | Enter: Anmelden | Esc: Beenden"
+
+  dashboard:
+    title: "Tonie Cloud"
+    home: "Home"
+    tonies: "Tonies"
+    upload: "Upload"
+    presets: "Presets"
+    settings: "Einstellungen"
+    logout: "Logout"
+    footer: "1-5: Navigation | R: Aktualisieren | Q: Logout | ?: Hilfe"
+
+  home:
+    welcome: "Willkommen bei Tonie Cloud!"
+    user_section: "Benutzer"
+    stats_section: "Statistik"
+    households: "Haushalte"
+    creative_tonies: "Creative Tonies"
+    total_chapters: "Kapitel gesamt"
+    total_duration: "Gesamtdauer"
+    free_space: "Freier Speicher"
+    shortcuts_section: "Tastenkürzel"
+
+  tonies:
+    title: "Creative Tonies"
+    select_household: "Haushalt wählen"
+    refresh: "Aktualisieren"
+    no_selection: "Wähle einen Tonie aus der Liste"
+    chapters_for: "Kapitel für \"{name}\":"
+    shuffle: "Mischen"
+    clear: "Löschen"
+    upload: "Upload"
+    shuffle_success: "Kapitel von \"{name}\" gemischt"
+    clear_success: "Kapitel von \"{name}\" gelöscht"
+    clear_confirm: "{count} Kapitel von \"{name}\" löschen?"
+    min_chapters: "Mindestens 2 Kapitel zum Mischen erforderlich"
+    no_chapters: "Keine Kapitel zum Löschen vorhanden"
+    select_first: "Bitte zuerst einen Tonie auswählen"
+
+  upload:
+    title: "Audiodateien hochladen"
+    select_tonie: "Tonie wählen..."
+    files: "Dateien:"
+    selected: "Ausgewählt:"
+    total: "Gesamt: {count} Dateien, {size} MB"
+    uploading: "Lade hoch: {filename} ({current}/{total})"
+    complete: "Fertig: {count} Dateien hochgeladen"
+    partial_fail: "Fertig: {success} hochgeladen, {failed} fehlgeschlagen"
+    no_files: "Keine Dateien ausgewählt"
+    no_tonie: "Bitte zuerst einen Tonie auswählen"
+    cannot_cancel: "Upload kann nicht abgebrochen werden. Bitte warten..."
+
+  settings:
+    title: "Einstellungen"
+    config_title: "Backend-Konfiguration"
+    status_title: "API-Status"
+    check_status: "Status prüfen"
+    connected: "Verbunden"
+    not_reachable: "Nicht erreichbar"
+    latency: "Latenz: {latency}ms"
+
+  presets:
+    title: "Presets"
+    refresh: "Aktualisieren"
+    run: "Ausführen"
+    delete: "Löschen"
+    empty: "Keine Presets vorhanden."
+    create_hint: "Erstelle Presets mit: toniebox preset create <name>"
+    running: "Starte Preset \"{name}\"..."
+    success: "Preset \"{name}\": {success}/{total} Aktionen erfolgreich"
+    partial_fail: "Preset \"{name}\": {success}/{total} erfolgreich"
+    delete_confirm: "Preset \"{name}\" mit {count} Aktionen löschen?"
+    deleted: "Preset \"{name}\" gelöscht"
+    select_first: "Bitte zuerst ein Preset auswählen"
+
+  error:
+    title: "Fehler"
+    session_expired: "Session abgelaufen. Bitte erneut anmelden."
+
+  confirm:
+    title: "Bestätigen"
+    logout: "Möchtest du dich wirklich ausloggen?"
+    yes: "Ja"
+    no: "Nein"
+
+  help:
+    title: "Hilfe"
+    navigation: "Navigation:"
+    actions: "Aktionen:"
