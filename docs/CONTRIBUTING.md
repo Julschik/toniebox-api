@@ -79,6 +79,54 @@ This project uses strict linting with [ruff](https://github.com/astral-sh/ruff):
 
 Pre-commit hooks will automatically check your code before each commit.
 
+## Terminology
+
+This tool supports **any audio files** (music, audiobooks, podcasts, voice memos, etc.). Always use generic terms in documentation and UI text:
+
+| ❌ Don't use | ✅ Use instead |
+|--------------|----------------|
+| audiobook(s) | audio file(s) |
+| Hörbuch/Hörbücher | Audiodatei(en) |
+
+**Exception:** When explicitly listing multiple types (e.g. "audiobooks and music" / "Hörbücher und Musik"), that's correct.
+
+## Security Rules
+
+**CRITICAL:** These rules must be followed for all code changes. See [TRUST.md](../TRUST.md) for user-facing security documentation.
+
+### Credentials & Tokens
+
+- ✅ Store credentials only in `~/.config/tonie-api/credentials`
+- ✅ Use file permissions `0o600` (owner read/write only)
+- ✅ Keep OAuth tokens in memory only, **never persist**
+- ✅ Environment variables: `TONIE_USERNAME`, `TONIE_PASSWORD` (not `USERNAME`/`PASSWORD` due to system conflicts)
+- ❌ Never log credentials, tokens, or email addresses
+
+### Network Communication
+
+- ✅ Use HTTPS only
+- ✅ Only communicate with official Tonie endpoints:
+  - `login.tonies.com` (OAuth)
+  - `api.tonie.cloud` (API)
+  - S3 URLs returned by the API (uploads)
+- ❌ No third-party services or CDNs
+- ❌ No telemetry, analytics, or tracking
+
+### Critical Files
+
+Extra care required when modifying:
+
+| File | Critical Area |
+|------|---------------|
+| `session.py` | Token handling, OAuth flow |
+| `api.py` | S3 upload, API requests |
+| `cli/commands.py` | Credential storage (`login`/`logout`) |
+
+### Error Handling
+
+- ❌ Never include sensitive data in error messages or exceptions
+- ✅ Use generic messages for auth failures ("Authentication failed")
+
 ## Commit Message Format
 
 This project follows [Conventional Commits](https://www.conventionalcommits.org):
@@ -136,7 +184,7 @@ Tests are in `tests/` and use:
 - **responses** for mocking HTTP requests
 - **coverage** for code coverage reporting
 
-Current coverage: 96% with 79 tests.
+Current coverage: 77% with 79 tests.
 
 ## Questions?
 

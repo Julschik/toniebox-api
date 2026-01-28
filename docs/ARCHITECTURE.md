@@ -171,7 +171,7 @@ output.py
 - **Unit tests** mock HTTP responses with `responses` library
 - **No live API calls** in regular test runs
 - **Connectivity tests** (`test_connectivity.py`) check API reachability
-- **Coverage target:** 95%+ (currently 96%)
+- **Coverage target:** 95%+ (currently 77%)
 
 Run tests:
 

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "tonie-api"
 version = "0.1.2"
-description = "Python library to access the REST API of the toniecloud. NOT associated with Boxine (tonies.de) in any way."
+description = "Python library to access the REST API of the toniecloud. NOT associated with Tonies SE (tonies.de) in any way."
 authors = []
 license = "MIT"
 readme = "README.md"
@@ -23,6 +23,9 @@ python = "^3.9"
 pydantic = "^2.3.0"
 python-dotenv = "^1.0.0"
 click = "^8.1.0"
+rich = "^13.7"
+questionary = "^2.0"
+pyyaml = "^6.0"
 
 [tool.poetry.scripts]
 tonie = "tonie_api.cli.main:cli"

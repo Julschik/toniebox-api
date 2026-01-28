@@ -692,7 +692,7 @@ version = "3.0.0"
 description = "Python port of markdown-it. Markdown parsing, done right!"
 optional = false
 python-versions = ">=3.8"
-groups = ["docs"]
+groups = ["main", "docs"]
 files = [
     {file = "markdown-it-py-3.0.0.tar.gz", hash = "sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb"},
     {file = "markdown_it_py-3.0.0-py3-none-any.whl", hash = "sha256:355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1"},
@@ -858,7 +858,7 @@ version = "0.1.2"
 description = "Markdown URL utilities"
 optional = false
 python-versions = ">=3.7"
-groups = ["docs"]
+groups = ["main", "docs"]
 files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
@@ -1037,6 +1037,21 @@ pyyaml = ">=5.1"
 virtualenv = ">=20.10.0"
 
 [[package]]
+name = "prompt-toolkit"
+version = "3.0.52"
+description = "Library for building powerful interactive command lines in Python"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "prompt_toolkit-3.0.52-py3-none-any.whl", hash = "sha256:9aac639a3bbd33284347de5ad8d68ecc044b91a762dc39b7c21095fcd6a19955"},
+    {file = "prompt_toolkit-3.0.52.tar.gz", hash = "sha256:28cde192929c8e7321de85de1ddbe736f1375148b02f2e17edd840042b1be855"},
+]
+
+[package.dependencies]
+wcwidth = "*"
+
+[[package]]
 name = "pydantic"
 version = "2.12.5"
 description = "Data validation using Python type hints"
@@ -1198,7 +1213,7 @@ version = "2.19.2"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.8"
-groups = ["dev", "docs"]
+groups = ["main", "dev", "docs"]
 files = [
     {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
     {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
@@ -1271,7 +1286,7 @@ version = "6.0.3"
 description = "YAML parser and emitter for Python"
 optional = false
 python-versions = ">=3.8"
-groups = ["dev", "docs"]
+groups = ["main", "dev", "docs"]
 files = [
     {file = "PyYAML-6.0.3-cp38-cp38-macosx_10_13_x86_64.whl", hash = "sha256:c2514fceb77bc5e7a2f7adfaa1feb2fb311607c9cb518dbc378688ec73d8292f"},
     {file = "PyYAML-6.0.3-cp38-cp38-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9c57bb8c96f6d1808c030b1687b9b5fb476abaa47f0db9c0101f5e9f394e97f4"},
@@ -1349,6 +1364,21 @@ files = [
 ]
 
 [[package]]
+name = "questionary"
+version = "2.1.1"
+description = "Python library to build pretty command line user prompts ⭐️"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "questionary-2.1.1-py3-none-any.whl", hash = "sha256:a51af13f345f1cdea62347589fbb6df3b290306ab8930713bfae4d475a7d4a59"},
+    {file = "questionary-2.1.1.tar.gz", hash = "sha256:3d7e980292bb0107abaa79c68dd3eee3c561b83a0f89ae482860b181c8bd412d"},
+]
+
+[package.dependencies]
+prompt_toolkit = ">=2.0,<4.0"
+
+[[package]]
 name = "requests"
 version = "2.32.5"
 description = "Python HTTP for Humans."
@@ -1389,6 +1419,26 @@ urllib3 = ">=1.25.10,<3.0"
 
 [package.extras]
 tests = ["coverage (>=6.0.0)", "flake8", "mypy", "pytest (>=7.0.0)", "pytest-asyncio", "pytest-cov", "pytest-httpserver", "tomli ; python_version < \"3.11\"", "tomli-w", "types-PyYAML", "types-requests"]
+
+[[package]]
+name = "rich"
+version = "13.9.4"
+description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
+optional = false
+python-versions = ">=3.8.0"
+groups = ["main"]
+files = [
+    {file = "rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90"},
+    {file = "rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098"},
+]
+
+[package.dependencies]
+markdown-it-py = ">=2.2.0"
+pygments = ">=2.13.0,<3.0.0"
+typing-extensions = {version = ">=4.0.0,<5.0", markers = "python_version < \"3.11\""}
+
+[package.extras]
+jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "ruff"
@@ -1770,6 +1820,18 @@ docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.2,!=7.3)", "s
 test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=23.1)", "pytest (>=7.4)", "pytest-env (>=0.8.2)", "pytest-freezer (>=0.4.8) ; platform_python_implementation == \"PyPy\" or platform_python_implementation == \"GraalVM\" or platform_python_implementation == \"CPython\" and sys_platform == \"win32\" and python_version >= \"3.13\"", "pytest-mock (>=3.11.1)", "pytest-randomly (>=3.12)", "pytest-timeout (>=2.1)", "setuptools (>=68)", "time-machine (>=2.10) ; platform_python_implementation == \"CPython\""]
 
 [[package]]
+name = "wcwidth"
+version = "0.5.0"
+description = "Measures the displayed width of unicode strings in a terminal"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "wcwidth-0.5.0-py3-none-any.whl", hash = "sha256:1efe1361b83b0ff7877b81ba57c8562c99cf812158b778988ce17ec061095695"},
+    {file = "wcwidth-0.5.0.tar.gz", hash = "sha256:f89c103c949a693bf563377b2153082bf58e309919dfb7f27b04d862a0089333"},
+]
+
+[[package]]
 name = "zipp"
 version = "3.23.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -1793,4 +1855,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "f267e7d237274f0efaad21f6dc065cbed5fe33e2221441724eb0ec2eac7aa5f5"
+content-hash = "8529e3c3c80f4fab652328076af4fcb89b6bb6f6e1b4d9848b9dc7aa9334cfdc"

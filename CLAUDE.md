@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Python library to access the REST API of the Tonie Cloud (tonies.de). This is an unofficial API client, not associated with Boxine.
+Python library to access the REST API of the Tonie Cloud (tonies.de). This is an unofficial API client, not associated with Tonies SE.
 
 ## Konfiguration
 
 Credentials werden aus `.env` geladen (via `python-dotenv`):
 
 - Kopiere `.env.example` nach `.env`
-- Variablen: `USERNAME`, `PASSWORD`
+- Variablen: `TONIE_USERNAME`, `TONIE_PASSWORD`
 
 Die `TonieAPI` Klasse lädt automatisch aus `.env`, wenn keine Credentials übergeben werden.
 
@@ -74,6 +74,63 @@ The library is structured in `src/tonie_api/`:
 - **Docstrings**: Google-style convention
 - **Type hints**: Required (except for `__init__` return types)
 
+## Terminologie / Terminology
+
+**WICHTIG:** Das Tool unterstützt beliebige Audiodateien (Musik, Hörbücher, Podcasts, Sprachmemos, etc.). Verwende daher immer die generischen Begriffe:
+
+| ❌ Nicht verwenden | ✅ Stattdessen |
+|--------------------|----------------|
+| Hörbuch, Hörbücher | Audiodatei, Audiodateien |
+| audiobook, audiobooks | audio file, audio files |
+
+**Ausnahme:** Wenn explizit mehrere Typen aufgezählt werden (z.B. "Hörbücher und Musik"), ist das korrekt.
+
+**IMPORTANT:** This tool supports any audio files (music, audiobooks, podcasts, voice memos, etc.). Always use generic terms:
+
+| ❌ Don't use | ✅ Use instead |
+|--------------|----------------|
+| audiobook, audiobooks | audio file, audio files |
+
+**Exception:** When explicitly listing multiple types (e.g. "audiobooks and music"), that's correct.
+
+## Security Rules (aus Security Audit)
+
+**KRITISCH:** Diese Regeln müssen bei allen Code-Änderungen eingehalten werden.
+
+### Credentials & Tokens
+
+- ✅ Credentials nur in `~/.config/tonie-api/credentials` speichern
+- ✅ Dateiberechtigungen `0o600` (nur Owner lesen/schreiben)
+- ✅ OAuth-Tokens nur im Arbeitsspeicher halten, **nie persistieren**
+- ✅ Umgebungsvariablen: `TONIE_USERNAME`, `TONIE_PASSWORD` (nicht `USERNAME`/`PASSWORD` wegen System-Konflikten)
+- ❌ Keine Credentials in Logs, Fehlermeldungen oder Exceptions
+
+### Netzwerk-Kommunikation
+
+- ✅ Nur HTTPS verwenden
+- ✅ Nur mit offiziellen Tonie-Endpoints kommunizieren:
+  - `login.tonies.com` (OAuth)
+  - `api.tonie.cloud` (API)
+  - S3-URLs von der API (Upload)
+- ❌ Keine Drittanbieter-Services oder CDNs
+- ❌ Keine Telemetrie, Analytics oder Tracking
+
+### Code-Änderungen in kritischen Dateien
+
+Bei Änderungen an diesen Dateien besondere Vorsicht:
+
+| Datei | Kritischer Bereich |
+|-------|-------------------|
+| `session.py` | Token-Handling, OAuth-Flow |
+| `api.py` | S3-Upload, API-Requests |
+| `cli/commands.py` | Credential-Speicherung (`login`/`logout`) |
+
+### Logging & Error Handling
+
+- ❌ Keine sensiblen Daten (Passwörter, Tokens, E-Mails) in Logs
+- ❌ Keine Credentials in Exception-Messages
+- ✅ Bei Auth-Fehlern nur generische Meldung ("Authentication failed")
+
 ## Testing
 
 Tests in `tests/`:
@@ -83,7 +140,7 @@ Tests in `tests/`:
 - **test_connectivity.py** - Prüft API-Erreichbarkeit (login.tonies.com, api.tonie.cloud)
 - **test_cli.py** - Unit-Tests für CLI Commands (31 Tests)
 
-Tests verwenden `pytest` und mocken HTTP-Requests mit der `responses` Library. Aktuell 79 Tests mit 96% Coverage.
+Tests verwenden `pytest` und mocken HTTP-Requests mit der `responses` Library. Aktuell 79 Tests mit 77% Coverage.
 
 ## Documentation
 
@@ -130,6 +187,7 @@ Commitlint validates on CI and via pre-commit hook.
   - [x] Input-Validierung in `upload_to_s3()` (Datei-Existenz prüfen)
   - [x] `requests-oauthlib` Dependency entfernt
   - [x] `RateLimitError` mit `retry_after` Property erweitert
+  - [x] Umgebungsvariablen-Dokumentation vereinheitlicht (`TONIE_USERNAME`/`TONIE_PASSWORD`)
 
 **Mögliche Erweiterungen:**
 

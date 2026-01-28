@@ -5,22 +5,22 @@
 [![Python](https://img.shields.io/badge/Python-3.9+-3776ab?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-79_passed-success?style=flat-square)](tests/)
-[![Coverage](https://img.shields.io/badge/Coverage-96%25-brightgreen?style=flat-square)](tests/)
+[![Coverage](https://img.shields.io/badge/Coverage-77%25-yellow?style=flat-square)](tests/)
 
 **Python client for the Tonie Cloud API | Python-Client für die Tonie Cloud API**
 
-*Upload audiobooks to your Creative Tonies directly from your computer*<br>
-*Lade Hörbücher direkt vom Computer auf deine Creative Tonies*
+*Upload audio files to your Creative Tonies directly from your computer*<br>
+*Lade Audiodateien direkt vom Computer auf deine Creative Tonies*
 
 </div>
 
 > [!WARNING]
-> **Unofficial** | This is not associated with tonies® or Boxine in any way.<br>
-> **Inoffiziell** | Dies ist kein offizielles Produkt von tonies® oder Boxine.
+> **Unofficial** | This is not associated with tonies® or Tonies SE in any way.<br>
+> **Inoffiziell** | Dies ist kein offizielles Produkt von tonies® oder Tonies SE.
 
 > [!NOTE]
-> **[🔒 Vertrauen & Sicherheit](TRUST.md)** - Lies, wie deine Daten geschützt werden.<br>
-> **[🔒 Trust & Security](TRUST.md)** - Read how your data is protected.
+> **[🔒 Vertrauen ist gut, Kontrolle ist besser.](TRUST.md)** - Prüfe, wie mit deinen Daten umgegangen wird.<br>
+> **[🔒 Don't trust, verify](TRUST.md)** - Review how your data is handled.
 
 ---
 
@@ -82,7 +82,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 ---
 
-### 🚀 Beispiel: Hörbuch hochladen
+### 🚀 Beispiel: Audiodatei hochladen
 
 ```bash
 # 1. Zeige alle Tonies an und notiere die ID
@@ -178,7 +178,7 @@ Dieses Tool wurde von Grund auf neu entwickelt. Die notwendigen API-Informatione
 
 ### About
 
-A command-line tool and Python library for uploading audiobooks to Creative Tonies - without the official app.
+A command-line tool and Python library for uploading audio files to Creative Tonies - without the official app.
 
 ---
 
@@ -231,7 +231,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 ---
 
-### 🚀 Example: Upload an Audiobook
+### 🚀 Example: Upload Audio
 
 ```bash
 # 1. List all your Tonies and note the ID
@@ -324,6 +324,6 @@ This tool was built from scratch. The necessary API information comes from [Wilh
 
 <div align="center">
 
-**[MIT License](LICENSE)** · Made with ❤️ for the Tonie community
+**[MIT License](LICENSE)** · Made with ❤️ for the tonies® community
 
 </div>

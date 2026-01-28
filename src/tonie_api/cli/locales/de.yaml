@@ -1,0 +1,122 @@
+cli:
+  main:
+    description: "Tonie Cloud CLI - Verwalte deine Creative Tonies von der Kommandozeile"
+    debug_help: "Debug-Logging aktivieren"
+    lang_help: "Sprache (de/en)"
+
+  me:
+    help: "Zeigt deine Kontoinformationen"
+
+  households:
+    help: "Zeigt alle Haushalte"
+    empty: "Keine Haushalte gefunden."
+
+  tonies:
+    help: "Zeigt Creative Tonies in einem Haushalt"
+    empty: "Keine Creative Tonies gefunden."
+
+  upload:
+    help: "Lädt eine Audiodatei auf einen Creative Tonie"
+    uploading: "Lade {filename} hoch..."
+    cloud_upload: "Lade in Cloud-Speicher hoch..."
+    adding_chapter: "Füge Kapitel '{title}' hinzu..."
+    success: "'{title}' auf {tonie_name} hochgeladen"
+    total_chapters: "Kapitel gesamt: {count}"
+    duration_info: "Dauer: {duration}s / Verbleibend: {remaining}s"
+
+  shuffle:
+    help: "Kapitel eines Creative Tonie mischen"
+    success: "{count} Kapitel auf '{name}' gemischt"
+
+  clear:
+    help: "Alle Kapitel von einem Creative Tonie löschen"
+    confirm: "{count} Kapitel von '{name}' löschen?"
+    no_chapters: "'{name}' hat keine Kapitel zum Löschen."
+    success: "Alle Kapitel von '{name}' gelöscht"
+
+  config:
+    help: "Zeigt Backend-Konfiguration und Limits"
+    title: "Backend-Konfiguration:"
+    max_chapters: "Max. Kapitel:    {count}"
+    max_duration: "Max. Dauer:      {minutes} Minuten ({seconds}s)"
+    max_size: "Max. Dateigröße: {mb:.0f} MB"
+    formats: "Formate:         {formats}"
+
+  status:
+    help: "Prüft API-Erreichbarkeit"
+    success: "API erreichbar (Latenz: {latency:.0f}ms)"
+    error: "API nicht erreichbar: {error}"
+
+  login:
+    help: "Speichere deine Tonie Cloud Zugangsdaten"
+    title: "Tonie Cloud Login"
+    already_logged_in: "Du bist bereits eingeloggt."
+    overwrite_confirm: "Zugangsdaten überschreiben?"
+    prompt: "Gib deine Tonie-Zugangsdaten ein (die gleichen wie in der Tonie-App):"
+    email_prompt: "E-Mail"
+    password_prompt: "Passwort"
+    verifying: "Überprüfe Zugangsdaten..."
+    success: "Eingeloggt als {email}"
+    invalid_creds: "Ungültige Zugangsdaten. Bitte überprüfe E-Mail und Passwort."
+    connection_error: "Verbindungsfehler: {error}"
+    saved: "Zugangsdaten gespeichert in ~/.config/tonie-api/credentials"
+    help_commands: |
+      Du kannst jetzt folgende Befehle nutzen:
+        tonie me       - Zeigt deine Benutzerinfo
+        tonie tonies   - Zeigt alle Creative Tonies
+        tonie upload   - Lädt Audiodateien hoch
+
+  logout:
+    help: "Gespeicherte Zugangsdaten löschen"
+    success: "Zugangsdaten gelöscht"
+    not_found: "Keine gespeicherten Zugangsdaten gefunden."
+
+  preset:
+    help: "Presets für automatisierte Workflows verwalten"
+    list:
+      help: "Zeigt alle verfügbaren Presets"
+      empty: "Keine Presets gefunden."
+      create_hint: "Erstelle ein Preset mit: tonie preset create <name>"
+    run:
+      help: "Führt ein Preset aus"
+      starting: "Starte Preset '{name}'..."
+      action_success: "  {action} auf {target}: OK"
+      action_error: "  {action} auf {target}: {error}"
+      summary: "{successful}/{total} Aktionen erfolgreich"
+    create:
+      help: "Erstellt ein neues Preset interaktiv"
+      exists_confirm: "Preset '{name}' existiert bereits. Überschreiben?"
+      description_prompt: "Beschreibung:"
+      add_actions: "Füge Aktionen hinzu (leer lassen zum Beenden):"
+      action_type_prompt: "Aktionstyp:"
+      action_done: "(Fertig)"
+      target_prompt: "Ziel (Tonie-ID oder 'all'):"
+      source_prompt: "Quelldatei/-ordner:"
+      action_added: "  Aktion hinzugefügt: {action_type} -> {target}"
+      no_actions: "Keine Aktionen definiert. Preset nicht erstellt."
+      success: "Preset '{name}' erstellt mit {count} Aktionen"
+    delete:
+      help: "Löscht ein Preset"
+      confirm: "Preset '{name}' mit {count} Aktionen löschen?"
+      success: "Preset '{name}' gelöscht"
+
+  interactive:
+    help: "Interaktiver Modus mit Menü-Navigation"
+    prompt: "Was möchtest du tun?"
+    show_tonies: "Tonies anzeigen"
+    upload: "Audiodatei hochladen"
+    shuffle: "Kapitel mischen"
+    clear_chapters: "Kapitel löschen"
+    run_preset: "Preset ausführen"
+    exit: "Beenden"
+    select_tonie: "Wähle einen Tonie:"
+    select_preset: "Wähle ein Preset:"
+    select_file: "Audiodatei auswählen:"
+    no_tonies: "Keine Tonies gefunden."
+    no_presets: "Keine Presets gefunden."
+    goodbye: "Auf Wiedersehen!"
+
+  error:
+    api: "API-Fehler: {error}"
+    preset: "Preset-Fehler: {error}"
+    no_households: "Keine Haushalte gefunden"

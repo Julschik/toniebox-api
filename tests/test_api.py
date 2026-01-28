@@ -6,6 +6,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 import responses
+from requests.exceptions import ConnectionError as RequestsConnectionError
+from requests.exceptions import SSLError, Timeout
 
 from tonie_api import (
     AuthenticationError,
@@ -123,7 +125,7 @@ class TestTonieAPIInitialization:
 
     @responses.activate
     def test_init_with_env_credentials(self):
-        """Test initialization with credentials from environment."""
+        """Test initialization with credentials from TONIE_ prefixed environment variables."""
         responses.add(
             responses.POST,
             TonieCloudSession.TOKEN_URL,
@@ -131,15 +133,56 @@ class TestTonieAPIInitialization:
             status=200,
         )
 
-        with patch.dict("os.environ", {"USERNAME": "env@example.com", "PASSWORD": "env-secret"}):
+        with patch.dict("os.environ", {"TONIE_USERNAME": "env@example.com", "TONIE_PASSWORD": "env-secret"}):
+            api = TonieAPI()
+            assert api._session is not None
+
+    def test_init_ignores_system_username_env_var(self):
+        """Test that generic USERNAME/PASSWORD env vars are ignored (macOS conflict)."""
+        # USERNAME is a system env var on macOS/Windows, must not be used
+        # Also patch load_dotenv to prevent loading from config files
+        with (
+            patch("tonie_api.api.load_dotenv"),
+            patch.dict(
+                "os.environ",
+                {"USERNAME": "system-user", "PASSWORD": "system-pass"},
+                clear=True,
+            ),
+            pytest.raises(AuthenticationError, match="Username and password are required"),
+        ):
+            TonieAPI()
+
+    @responses.activate
+    def test_init_requires_tonie_prefixed_env_vars(self):
+        """Test that only TONIE_ prefixed env vars are accepted."""
+        responses.add(
+            responses.POST,
+            TonieCloudSession.TOKEN_URL,
+            json={"access_token": "test-token", "token_type": "Bearer"},
+            status=200,
+        )
+
+        # When both generic and TONIE_ prefixed are present, only TONIE_ is used
+        with patch.dict(
+            "os.environ",
+            {
+                "USERNAME": "generic@example.com",
+                "PASSWORD": "generic-pass",
+                "TONIE_USERNAME": "tonie@example.com",
+                "TONIE_PASSWORD": "tonie-pass",
+            },
+        ):
             api = TonieAPI()
             assert api._session is not None
 
     def test_init_without_credentials(self):
         """Test that initialization fails without credentials."""
-        # Need to explicitly clear USERNAME and PASSWORD
-        with patch.dict("os.environ", {"USERNAME": "", "PASSWORD": ""}, clear=False), pytest.raises(
-            AuthenticationError, match="Username and password are required"
+        # Need to explicitly clear TONIE_USERNAME and TONIE_PASSWORD
+        # Also patch load_dotenv to prevent loading from config files
+        with (
+            patch("tonie_api.api.load_dotenv"),
+            patch.dict("os.environ", {"TONIE_USERNAME": "", "TONIE_PASSWORD": ""}, clear=True),
+            pytest.raises(AuthenticationError, match="Username and password are required"),
         ):
             TonieAPI()
 
@@ -173,7 +216,9 @@ class TestCoreAPIMethods:
         user = api.get_me()
         assert user.uuid == "user-123"
         assert user.email == "test@example.com"
-        mock_session.request.assert_called_once_with("GET", f"{BASE_URL}/me")
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("GET", f"{BASE_URL}/me")
 
     def test_get_config(self, api, mock_session, sample_config):
         """Test fetching configuration."""
@@ -182,7 +227,9 @@ class TestCoreAPIMethods:
         config = api.get_config()
         assert config.max_chapters == 99
         assert config.max_seconds == 5400
-        mock_session.request.assert_called_once_with("GET", f"{BASE_URL}/config")
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("GET", f"{BASE_URL}/config")
 
     def test_get_households(self, api, mock_session, sample_household):
         """Test fetching households."""
@@ -201,7 +248,9 @@ class TestCoreAPIMethods:
         assert len(tonies) == 1
         assert tonies[0].id == "tonie-123"
         assert tonies[0].name == "My Tonie"
-        mock_session.request.assert_called_once_with("GET", f"{BASE_URL}/households/hh-123/creativetonies")
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("GET", f"{BASE_URL}/households/hh-123/creativetonies")
 
     def test_get_creative_tonie(self, api, mock_session, sample_tonie):
         """Test fetching a specific creative tonie."""
@@ -210,9 +259,9 @@ class TestCoreAPIMethods:
         tonie = api.get_creative_tonie("hh-123", "tonie-123")
         assert tonie.id == "tonie-123"
         assert len(tonie.chapters) == 2
-        mock_session.request.assert_called_once_with(
-            "GET", f"{BASE_URL}/households/hh-123/creativetonies/tonie-123"
-        )
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("GET", f"{BASE_URL}/households/hh-123/creativetonies/tonie-123")
 
     def test_update_creative_tonie_chapters(self, api, mock_session, sample_tonie):
         """Test updating creative tonie chapters."""
@@ -221,11 +270,10 @@ class TestCoreAPIMethods:
         chapters = [{"id": "ch-1", "title": "Track 1", "file": "file-1"}]
         tonie = api.update_creative_tonie("hh-123", "tonie-123", chapters=chapters)
         assert tonie.id == "tonie-123"
-        mock_session.request.assert_called_once_with(
-            "PATCH",
-            f"{BASE_URL}/households/hh-123/creativetonies/tonie-123",
-            json={"chapters": chapters},
-        )
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("PATCH", f"{BASE_URL}/households/hh-123/creativetonies/tonie-123")
+        assert call_args[1]["json"] == {"chapters": chapters}
 
     def test_update_creative_tonie_name(self, api, mock_session, sample_tonie):
         """Test updating creative tonie name."""
@@ -233,11 +281,10 @@ class TestCoreAPIMethods:
 
         tonie = api.update_creative_tonie("hh-123", "tonie-123", name="New Name")
         assert tonie.id == "tonie-123"
-        mock_session.request.assert_called_once_with(
-            "PATCH",
-            f"{BASE_URL}/households/hh-123/creativetonies/tonie-123",
-            json={"name": "New Name"},
-        )
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("PATCH", f"{BASE_URL}/households/hh-123/creativetonies/tonie-123")
+        assert call_args[1]["json"] == {"name": "New Name"}
 
     def test_add_chapter(self, api, mock_session, sample_tonie):
         """Test adding a chapter to a tonie."""
@@ -245,11 +292,10 @@ class TestCoreAPIMethods:
 
         tonie = api.add_chapter("hh-123", "tonie-123", "New Track", "file-uuid")
         assert tonie.id == "tonie-123"
-        mock_session.request.assert_called_once_with(
-            "POST",
-            f"{BASE_URL}/households/hh-123/creativetonies/tonie-123/chapters",
-            json={"title": "New Track", "file": "file-uuid"},
-        )
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("POST", f"{BASE_URL}/households/hh-123/creativetonies/tonie-123/chapters")
+        assert call_args[1]["json"] == {"title": "New Track", "file": "file-uuid"}
 
     def test_request_file_upload(self, api, mock_session, sample_upload_request):
         """Test requesting a file upload URL."""
@@ -258,7 +304,9 @@ class TestCoreAPIMethods:
         upload = api.request_file_upload()
         assert upload.file_id == "file-uuid-123"
         assert upload.request.url == "https://s3.amazonaws.com/tonie-bucket"
-        mock_session.request.assert_called_once_with("POST", f"{BASE_URL}/file")
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("POST", f"{BASE_URL}/file")
 
 
 class TestErrorHandling:
@@ -537,11 +585,10 @@ class TestConvenienceMethods:
 
         tonie = api.clear_chapters("hh-123", "tonie-123")
         assert tonie.chapters == []
-        mock_session.request.assert_called_once_with(
-            "PATCH",
-            f"{BASE_URL}/households/hh-123/creativetonies/tonie-123",
-            json={"chapters": []},
-        )
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("PATCH", f"{BASE_URL}/households/hh-123/creativetonies/tonie-123")
+        assert call_args[1]["json"] == {"chapters": []}
 
     def test_set_chapters(self, api, mock_session, sample_tonie):
         """Test setting chapters to a specific list."""
@@ -553,11 +600,145 @@ class TestConvenienceMethods:
         ]
         tonie = api.set_chapters("hh-123", "tonie-123", chapters)
         assert tonie.id == "tonie-123"
-        mock_session.request.assert_called_once_with(
-            "PATCH",
-            f"{BASE_URL}/households/hh-123/creativetonies/tonie-123",
-            json={"chapters": chapters},
+        mock_session.request.assert_called_once()
+        call_args = mock_session.request.call_args
+        assert call_args[0] == ("PATCH", f"{BASE_URL}/households/hh-123/creativetonies/tonie-123")
+        assert call_args[1]["json"] == {"chapters": chapters}
+
+
+class TestUploadEdgeCases:
+    """Tests for upload edge cases and error handling."""
+
+    @responses.activate
+    def test_upload_to_s3_empty_file(self, api, mock_session, sample_upload_request):
+        """Test uploading an empty file."""
+        mock_session.request.return_value = MagicMock(ok=True, json=lambda: sample_upload_request)
+
+        responses.add(
+            responses.POST,
+            "https://s3.amazonaws.com/tonie-bucket",
+            status=204,
         )
+
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as f:
+            # Write nothing - empty file
+            temp_path = f.name
+
+        try:
+            file_id = api.upload_to_s3(temp_path)
+            assert file_id == "file-uuid-123"
+        finally:
+            Path(temp_path).unlink()
+
+    @responses.activate
+    def test_upload_to_s3_s3_error_403(self, api, mock_session, sample_upload_request):
+        """Test S3 returning 403 Forbidden raises ServerError."""
+        mock_session.request.return_value = MagicMock(ok=True, json=lambda: sample_upload_request)
+
+        responses.add(
+            responses.POST,
+            "https://s3.amazonaws.com/tonie-bucket",
+            json={"error": "AccessDenied"},
+            status=403,
+        )
+
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as f:
+            f.write(b"fake audio")
+            temp_path = f.name
+
+        try:
+            with pytest.raises(ServerError) as exc_info:
+                api.upload_to_s3(temp_path)
+            assert exc_info.value.status_code == 403
+            assert "S3 Upload" in str(exc_info.value)
+        finally:
+            Path(temp_path).unlink()
+
+    @responses.activate
+    def test_upload_to_s3_s3_error_500(self, api, mock_session, sample_upload_request):
+        """Test S3 returning 500 Internal Server Error raises ServerError."""
+        mock_session.request.return_value = MagicMock(ok=True, json=lambda: sample_upload_request)
+
+        responses.add(
+            responses.POST,
+            "https://s3.amazonaws.com/tonie-bucket",
+            json={"error": "InternalError"},
+            status=500,
+        )
+
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as f:
+            f.write(b"fake audio")
+            temp_path = f.name
+
+        try:
+            with pytest.raises(ServerError) as exc_info:
+                api.upload_to_s3(temp_path)
+            assert exc_info.value.status_code == 500
+        finally:
+            Path(temp_path).unlink()
+
+    def test_upload_to_s3_file_not_found(self, api, mock_session, sample_upload_request):
+        """Test uploading non-existent file raises ValidationError."""
+        mock_session.request.return_value = MagicMock(ok=True, json=lambda: sample_upload_request)
+
+        with pytest.raises(ValidationError, match="nicht gefunden"):
+            api.upload_to_s3("/nonexistent/path/to/file.mp3")
+
+    def test_upload_to_s3_path_is_directory(self, api, mock_session, sample_upload_request):
+        """Test uploading a directory raises ValidationError."""
+        mock_session.request.return_value = MagicMock(ok=True, json=lambda: sample_upload_request)
+
+        with tempfile.TemporaryDirectory() as temp_dir, pytest.raises(
+            ValidationError, match="Kein gültiger Dateipfad"
+        ):
+            api.upload_to_s3(temp_dir)
+
+
+class TestNetworkErrors:
+    """Tests for network error handling."""
+
+    def test_request_timeout(self, api, mock_session):
+        """Test that request timeouts are propagated."""
+        mock_session.request.side_effect = Timeout("Connection timed out")
+
+        with pytest.raises(Timeout):
+            api.get_me()
+
+    def test_request_connection_error(self, api, mock_session):
+        """Test that connection errors are propagated."""
+        mock_session.request.side_effect = RequestsConnectionError("Connection refused")
+
+        with pytest.raises(RequestsConnectionError):
+            api.get_me()
+
+    def test_request_ssl_error(self, api, mock_session):
+        """Test that SSL errors are propagated."""
+        mock_session.request.side_effect = SSLError("SSL certificate verify failed")
+
+        with pytest.raises(SSLError):
+            api.get_me()
+
+    @responses.activate
+    def test_upload_to_s3_timeout(self, api, mock_session, sample_upload_request):
+        """Test S3 upload timeout raises TonieAPIError."""
+        mock_session.request.return_value = MagicMock(ok=True, json=lambda: sample_upload_request)
+
+        responses.add(
+            responses.POST,
+            "https://s3.amazonaws.com/tonie-bucket",
+            body=Timeout("Connection timed out"),
+        )
+
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as f:
+            f.write(b"fake audio")
+            temp_path = f.name
+
+        try:
+            with pytest.raises(TonieAPIError) as exc_info:
+                api.upload_to_s3(temp_path)
+            assert "Timeout" in str(exc_info.value)
+        finally:
+            Path(temp_path).unlink()
 
 
 class TestExceptionAttributes:

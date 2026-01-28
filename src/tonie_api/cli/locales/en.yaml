@@ -1,0 +1,122 @@
+cli:
+  main:
+    description: "Tonie Cloud CLI - Manage your Creative Tonies from the command line"
+    debug_help: "Enable debug logging"
+    lang_help: "Language (de/en)"
+
+  me:
+    help: "Show your account information"
+
+  households:
+    help: "List all households"
+    empty: "No households found."
+
+  tonies:
+    help: "List Creative Tonies in a household"
+    empty: "No Creative Tonies found."
+
+  upload:
+    help: "Upload an audio file to a Creative Tonie"
+    uploading: "Uploading {filename}..."
+    cloud_upload: "Uploading to cloud storage..."
+    adding_chapter: "Adding chapter '{title}'..."
+    success: "Uploaded '{title}' to {tonie_name}"
+    total_chapters: "Total chapters: {count}"
+    duration_info: "Duration: {duration}s / Remaining: {remaining}s"
+
+  shuffle:
+    help: "Shuffle chapters of a Creative Tonie"
+    success: "Shuffled {count} chapters on '{name}'"
+
+  clear:
+    help: "Clear all chapters from a Creative Tonie"
+    confirm: "Clear {count} chapters from '{name}'?"
+    no_chapters: "'{name}' has no chapters to clear."
+    success: "Cleared all chapters from '{name}'"
+
+  config:
+    help: "Show backend configuration and limits"
+    title: "Backend Configuration:"
+    max_chapters: "Max chapters:    {count}"
+    max_duration: "Max duration:    {minutes} minutes ({seconds}s)"
+    max_size: "Max file size:   {mb:.0f} MB"
+    formats: "Formats:         {formats}"
+
+  status:
+    help: "Check API reachability"
+    success: "API reachable (latency: {latency:.0f}ms)"
+    error: "API not reachable: {error}"
+
+  login:
+    help: "Save your Tonie Cloud credentials"
+    title: "Tonie Cloud Login"
+    already_logged_in: "You are already logged in."
+    overwrite_confirm: "Overwrite credentials?"
+    prompt: "Enter your Tonie credentials (same as in the Tonie app):"
+    email_prompt: "Email"
+    password_prompt: "Password"
+    verifying: "Verifying credentials..."
+    success: "Logged in as {email}"
+    invalid_creds: "Invalid credentials. Please check email and password."
+    connection_error: "Connection error: {error}"
+    saved: "Credentials saved to ~/.config/tonie-api/credentials"
+    help_commands: |
+      You can now use these commands:
+        tonie me       - Show your user info
+        tonie tonies   - Show all Creative Tonies
+        tonie upload   - Upload audio files
+
+  logout:
+    help: "Remove saved credentials"
+    success: "Credentials deleted"
+    not_found: "No saved credentials found."
+
+  preset:
+    help: "Manage presets for automated workflows"
+    list:
+      help: "List all available presets"
+      empty: "No presets found."
+      create_hint: "Create a preset with: tonie preset create <name>"
+    run:
+      help: "Run a preset"
+      starting: "Starting preset '{name}'..."
+      action_success: "  {action} on {target}: OK"
+      action_error: "  {action} on {target}: {error}"
+      summary: "{successful}/{total} actions successful"
+    create:
+      help: "Create a new preset interactively"
+      exists_confirm: "Preset '{name}' already exists. Overwrite?"
+      description_prompt: "Description:"
+      add_actions: "Add actions (leave empty to finish):"
+      action_type_prompt: "Action type:"
+      action_done: "(Done)"
+      target_prompt: "Target (Tonie ID or 'all'):"
+      source_prompt: "Source file/folder:"
+      action_added: "  Action added: {action_type} -> {target}"
+      no_actions: "No actions defined. Preset not created."
+      success: "Preset '{name}' created with {count} actions"
+    delete:
+      help: "Delete a preset"
+      confirm: "Delete preset '{name}' with {count} actions?"
+      success: "Preset '{name}' deleted"
+
+  interactive:
+    help: "Interactive mode with menu navigation"
+    prompt: "What would you like to do?"
+    show_tonies: "Show Tonies"
+    upload: "Upload audio file"
+    shuffle: "Shuffle chapters"
+    clear_chapters: "Clear chapters"
+    run_preset: "Run preset"
+    exit: "Exit"
+    select_tonie: "Select a Tonie:"
+    select_preset: "Select a preset:"
+    select_file: "Select audio file:"
+    no_tonies: "No Tonies found."
+    no_presets: "No presets found."
+    goodbye: "Goodbye!"
+
+  error:
+    api: "API Error: {error}"
+    preset: "Preset Error: {error}"
+    no_households: "No households found"

@@ -34,7 +34,7 @@ GitHub → Dein PC → Tonie Cloud API
 
 ### Haftungsausschluss
 
-> ⚠️ **Inoffizieller Client** - Keine Verbindung zu tonies® oder Boxine GmbH.
+> ⚠️ **Inoffizieller Client** - Keine Verbindung zu tonies® oder Tonies SE.
 
 Nutzung auf eigene Gefahr. Der Autor übernimmt keine Haftung für:
 - Datenverlust
@@ -82,7 +82,7 @@ GitHub → Your PC → Tonie Cloud API
 
 ### Disclaimer
 
-> ⚠️ **Unofficial client** - No affiliation with tonies® or Boxine GmbH.
+> ⚠️ **Unofficial client** - No affiliation with tonies® or Tonies SE.
 
 Use at your own risk. The author assumes no liability for:
 - Data loss

@@ -211,7 +211,7 @@ class TestHouseholdsCommand:
             result = runner.invoke(cli, ["households"])
 
             assert result.exit_code == 0
-            assert "No households found" in result.output
+            assert "Keine Haushalte gefunden" in result.output or "No households found" in result.output
 
 
 class TestToniesCommand:
@@ -266,7 +266,7 @@ class TestToniesCommand:
             result = runner.invoke(cli, ["tonies", "hh-1"])
 
             assert result.exit_code == 0
-            assert "No Creative Tonies found" in result.output
+            assert "Keine Creative Tonies" in result.output or "No Creative Tonies" in result.output
 
 
 class TestUploadCommand:
@@ -289,7 +289,8 @@ class TestUploadCommand:
             result = runner.invoke(cli, ["upload", str(test_file), "tonie-1"])
 
             assert result.exit_code == 0
-            assert "Uploaded 'test_audio'" in result.output
+            assert "test_audio" in result.output
+            assert ("hochgeladen" in result.output or "Uploaded" in result.output)
             mock_api.add_chapter.assert_called_once()
 
     def test_upload_with_title(self, runner, mock_households, mock_creative_tonies, mock_upload_request, tmp_path):
@@ -349,7 +350,7 @@ class TestShuffleCommand:
             result = runner.invoke(cli, ["shuffle", "tonie-1"])
 
             assert result.exit_code == 0
-            assert "Shuffled" in result.output
+            assert "gemischt" in result.output or "Shuffled" in result.output
             mock_api.shuffle_chapters.assert_called_once_with("hh-1", "tonie-1")
 
     def test_shuffle_with_household(self, runner, mock_creative_tonies):
@@ -392,7 +393,7 @@ class TestClearCommand:
             result = runner.invoke(cli, ["clear", "tonie-1"], input="y\n")
 
             assert result.exit_code == 0
-            assert "Cleared" in result.output
+            assert "gelöscht" in result.output or "Cleared" in result.output
             mock_api.clear_chapters.assert_called_once()
 
     def test_clear_with_yes_flag(self, runner, mock_households, mock_creative_tonies):
@@ -407,7 +408,7 @@ class TestClearCommand:
             result = runner.invoke(cli, ["clear", "tonie-1", "--yes"])
 
             assert result.exit_code == 0
-            assert "Cleared" in result.output
+            assert "gelöscht" in result.output or "Cleared" in result.output
 
     def test_clear_aborted(self, runner, mock_households, mock_creative_tonies):
         """Test clear command when user declines."""
@@ -434,7 +435,7 @@ class TestClearCommand:
             result = runner.invoke(cli, ["clear", "tonie-2"])
 
             assert result.exit_code == 0
-            assert "no chapters" in result.output
+            assert "keine Kapitel" in result.output or "no chapters" in result.output
             mock_api.clear_chapters.assert_not_called()
 
 
@@ -463,7 +464,215 @@ class TestErrorHandling:
             result = runner.invoke(cli, ["tonies"])
 
             assert result.exit_code == 1
-            assert "No households found" in result.output
+            assert "Keine Haushalte" in result.output or "No households" in result.output
+
+
+class TestConfigCommand:
+    """Tests for the config command."""
+
+    def test_config_success(self, runner):
+        """Test successful config command."""
+        from tonie_api.models import Config
+
+        mock_config = Config(
+            locales=["de", "en"],
+            unicode_locales=["de-DE", "en-US"],
+            max_chapters=99,
+            max_seconds=5400,
+            max_bytes=536870912,
+            accepts=["audio/mpeg"],
+            stage_warning=False,
+            paypal_client_id="paypal-123",
+            sso_enabled=True,
+        )
+
+        with patch("tonie_api.cli.commands.TonieAPI") as mock_api_class:
+            mock_api = MagicMock()
+            mock_api.get_config.return_value = mock_config
+            mock_api_class.return_value = mock_api
+
+            result = runner.invoke(cli, ["config"])
+
+            assert result.exit_code == 0
+            assert "99" in result.output  # max_chapters
+            assert "90" in result.output  # 5400 / 60 = 90 minutes
+            assert "512" in result.output  # 536870912 / 1024 / 1024 = 512 MB
+            assert "audio/mpeg" in result.output
+
+    def test_config_json_output(self, runner):
+        """Test config command with JSON output."""
+        from tonie_api.models import Config
+
+        mock_config = Config(
+            locales=["de"],
+            unicode_locales=["de-DE"],
+            max_chapters=50,
+            max_seconds=3600,
+            max_bytes=268435456,
+            accepts=["audio/mpeg"],
+            stage_warning=False,
+            paypal_client_id="test",
+            sso_enabled=False,
+        )
+
+        with patch("tonie_api.cli.commands.TonieAPI") as mock_api_class:
+            mock_api = MagicMock()
+            mock_api.get_config.return_value = mock_config
+            mock_api_class.return_value = mock_api
+
+            result = runner.invoke(cli, ["--json", "config"])
+
+            assert result.exit_code == 0
+            assert '"maxChapters": 50' in result.output
+
+
+class TestStatusCommand:
+    """Tests for the status command."""
+
+    def test_status_success(self, runner, mock_user):
+        """Test successful status command."""
+        with patch("tonie_api.cli.commands.TonieAPI") as mock_api_class:
+            mock_api = MagicMock()
+            mock_api.get_me.return_value = mock_user
+            mock_api_class.return_value = mock_api
+
+            result = runner.invoke(cli, ["status"])
+
+            assert result.exit_code == 0
+            assert "erreichbar" in result.output
+
+    def test_status_json_output(self, runner, mock_user):
+        """Test status command with JSON output."""
+        with patch("tonie_api.cli.commands.TonieAPI") as mock_api_class:
+            mock_api = MagicMock()
+            mock_api.get_me.return_value = mock_user
+            mock_api_class.return_value = mock_api
+
+            result = runner.invoke(cli, ["--json", "status"])
+
+            assert result.exit_code == 0
+            assert '"status": "ok"' in result.output
+            assert '"latency_ms"' in result.output
+
+    def test_status_api_unreachable(self, runner):
+        """Test status command when API is unreachable."""
+        with patch("tonie_api.cli.commands.TonieAPI") as mock_api_class:
+            mock_api = MagicMock()
+            mock_api.get_me.side_effect = TonieAPIError("Connection failed")
+            mock_api_class.return_value = mock_api
+
+            result = runner.invoke(cli, ["status"])
+
+            assert result.exit_code == 1
+            assert "nicht erreichbar" in result.output
+
+
+class TestLoginCommand:
+    """Tests for the login command."""
+
+    def test_login_success(self, runner, mock_user, tmp_path):
+        """Test successful login command."""
+        with (
+            patch("tonie_api.cli.commands.TonieAPI") as mock_api_class,
+            patch("tonie_api.cli.commands.CONFIG_DIR", tmp_path),
+            patch("tonie_api.cli.commands.CREDENTIALS_FILE", tmp_path / "credentials"),
+        ):
+            mock_api = MagicMock()
+            mock_api.get_me.return_value = mock_user
+            mock_api_class.return_value = mock_api
+
+            result = runner.invoke(cli, ["login"], input="test@example.com\nsecret\n")
+
+            assert result.exit_code == 0
+            assert "Eingeloggt" in result.output
+            assert (tmp_path / "credentials").exists()
+
+            # Verify credentials content
+            content = (tmp_path / "credentials").read_text()
+            assert "TONIE_USERNAME=test@example.com" in content
+            assert "TONIE_PASSWORD=secret" in content
+
+    def test_login_invalid_credentials(self, runner, tmp_path):
+        """Test login command with invalid credentials."""
+        with (
+            patch("tonie_api.cli.commands.TonieAPI") as mock_api_class,
+            patch("tonie_api.cli.commands.CONFIG_DIR", tmp_path),
+            patch("tonie_api.cli.commands.CREDENTIALS_FILE", tmp_path / "credentials"),
+        ):
+            mock_api_class.side_effect = AuthenticationError("Invalid credentials")
+
+            result = runner.invoke(cli, ["login"], input="bad@example.com\nwrong\n")
+
+            assert result.exit_code == 1
+            assert "Ungültige Zugangsdaten" in result.output
+            assert not (tmp_path / "credentials").exists()
+
+    def test_login_file_permissions(self, runner, mock_user, tmp_path):
+        """Test that credentials file has correct permissions."""
+        import stat
+
+        with (
+            patch("tonie_api.cli.commands.TonieAPI") as mock_api_class,
+            patch("tonie_api.cli.commands.CONFIG_DIR", tmp_path),
+            patch("tonie_api.cli.commands.CREDENTIALS_FILE", tmp_path / "credentials"),
+        ):
+            mock_api = MagicMock()
+            mock_api.get_me.return_value = mock_user
+            mock_api_class.return_value = mock_api
+
+            result = runner.invoke(cli, ["login"], input="test@example.com\nsecret\n")
+
+            assert result.exit_code == 0
+            cred_file = tmp_path / "credentials"
+            mode = stat.S_IMODE(cred_file.stat().st_mode)
+            assert mode == 0o600  # Owner read/write only
+
+    def test_login_overwrite_existing(self, runner, mock_user, tmp_path):
+        """Test overwriting existing credentials."""
+        cred_file = tmp_path / "credentials"
+        cred_file.write_text("TONIE_USERNAME=old@example.com\nTONIE_PASSWORD=oldpass\n")
+
+        with (
+            patch("tonie_api.cli.commands.TonieAPI") as mock_api_class,
+            patch("tonie_api.cli.commands.CONFIG_DIR", tmp_path),
+            patch("tonie_api.cli.commands.CREDENTIALS_FILE", cred_file),
+        ):
+            mock_api = MagicMock()
+            mock_api.get_me.return_value = mock_user
+            mock_api_class.return_value = mock_api
+
+            # Answer yes to overwrite
+            result = runner.invoke(cli, ["login"], input="y\nnew@example.com\nnewpass\n")
+
+            assert result.exit_code == 0
+            content = cred_file.read_text()
+            assert "TONIE_USERNAME=new@example.com" in content
+
+
+class TestLogoutCommand:
+    """Tests for the logout command."""
+
+    def test_logout_success(self, runner, tmp_path):
+        """Test successful logout command."""
+        cred_file = tmp_path / "credentials"
+        cred_file.write_text("TONIE_USERNAME=test@example.com\nTONIE_PASSWORD=secret\n")
+
+        with patch("tonie_api.cli.commands.CREDENTIALS_FILE", cred_file):
+            result = runner.invoke(cli, ["logout"])
+
+            assert result.exit_code == 0
+            assert "gelöscht" in result.output
+            assert not cred_file.exists()
+
+    def test_logout_no_credentials(self, runner, tmp_path):
+        """Test logout command when no credentials file exists."""
+        cred_file = tmp_path / "credentials"
+
+        with patch("tonie_api.cli.commands.CREDENTIALS_FILE", cred_file):
+            result = runner.invoke(cli, ["logout"])
+
+            assert result.exit_code == 0
+            assert "Keine gespeicherten Zugangsdaten" in result.output
 
 
 class TestGlobalOptions:

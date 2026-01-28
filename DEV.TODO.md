@@ -1,14 +1,5 @@
 # Offene Aufgaben
 
-## 🔐 Security Audit
-
-- [x] Privacy by Design
-- [x] Das gesamte Repo Datei für Datei durchsuchen nach unnötigem Code
-- [x] Sind in dem öffentlichen Repo persönliche Daten? → History gelöscht
-- [x] Trust.md erstellen und ganz oben im README verlinken
-- [x] Haftungsausschluss in jeglicher Form formulieren
-- [ ] Sicherheitsregeln für künftiges Development in den Docs + claude.md festschreiben.
-
 ## 🖥️ CLI Tool verbessern
 
 - [ ] Optisch verschönern
