@@ -663,11 +663,21 @@ def _interactive_clear(api: TonieAPI, household_id: str) -> None:
         print_success(t("cli.clear.success", name=tonie.name))
 
 
+def _is_pipx_environment() -> bool:
+    """Check if running in a pipx-managed environment."""
+    import sys
+
+    # pipx installs into ~/.local/pipx/venvs/<package>/...
+    venv_path = sys.prefix
+    return "pipx" in venv_path and "venvs" in venv_path
+
+
 @click.command()
 @click.option("--force", "-f", is_flag=True, help="Update without confirmation")
 @click.pass_context
 def update(ctx: click.Context, force: bool) -> None:
     """Update tonie-api to the latest version from GitHub."""
+    import shutil
     import subprocess
     import sys
 
@@ -677,16 +687,35 @@ def update(ctx: click.Context, force: bool) -> None:
     click.echo(t("cli.update.updating"))
 
     try:
-        result = subprocess.run(  # noqa: S603 (REPO_URL is a trusted constant)
-            [sys.executable, "-m", "pip", "install", "--upgrade", REPO_URL],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
+        if _is_pipx_environment():
+            # pipx installation - use pipx install --force for clean upgrade
+            pipx_path = shutil.which("pipx")
+            if not pipx_path:
+                print_error(t("cli.update.pipx_not_found"))
+                ctx.exit(1)
+
+            # pipx install --force ensures clean upgrade including entry points
+            result = subprocess.run(  # noqa: S603 (pipx_path from shutil.which, REPO_URL is trusted)
+                [pipx_path, "install", "--force", REPO_URL],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+        else:
+            # Regular pip installation
+            result = subprocess.run(  # noqa: S603 (REPO_URL is a trusted constant)
+                [sys.executable, "-m", "pip", "install", "--upgrade", REPO_URL],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+
         if ctx.obj.get("debug"):
             click.echo(result.stdout)
+
         print_success(t("cli.update.success"))
         click.echo(t("cli.update.restart_hint"))
+
     except subprocess.CalledProcessError as e:
         error_msg = e.stderr.strip() if e.stderr else str(e)
         print_error(t("cli.update.failed", error=error_msg))

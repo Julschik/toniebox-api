@@ -123,6 +123,7 @@ cli:
     success: "tonie-api erfolgreich aktualisiert"
     failed: "Aktualisierung fehlgeschlagen: {error}"
     restart_hint: "Bitte starte die CLI neu, um die neue Version zu nutzen."
+    pipx_not_found: "pipx nicht gefunden. Bitte installiere mit: brew install pipx"
 
   error:
     api: "API-Fehler: {error}"
