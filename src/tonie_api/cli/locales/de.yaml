@@ -116,6 +116,14 @@ cli:
     no_presets: "Keine Presets gefunden."
     goodbye: "Auf Wiedersehen!"
 
+  update:
+    help: "Aktualisiert tonie-api auf die neueste Version von GitHub"
+    confirm: "tonie-api auf die neueste Version aktualisieren?"
+    updating: "Aktualisiere tonie-api..."
+    success: "tonie-api erfolgreich aktualisiert"
+    failed: "Aktualisierung fehlgeschlagen: {error}"
+    restart_hint: "Bitte starte die CLI neu, um die neue Version zu nutzen."
+
   error:
     api: "API-Fehler: {error}"
     preset: "Preset-Fehler: {error}"

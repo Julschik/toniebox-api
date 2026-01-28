@@ -18,6 +18,7 @@ from tonie_api.cli.commands import (
     shuffle,
     status,
     tonies,
+    update,
     upload,
 )
 from tonie_api.cli.i18n import load_locale
@@ -85,6 +86,7 @@ cli.add_command(config)
 cli.add_command(status)
 cli.add_command(preset)
 cli.add_command(interactive)
+cli.add_command(update)
 
 
 if __name__ == "__main__":

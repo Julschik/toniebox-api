@@ -689,3 +689,60 @@ class TestGlobalOptions:
 
             assert result.exit_code == 0
             mock_api_class.assert_called_once_with(username="user@example.com", password="secret")
+
+
+class TestUpdateCommand:
+    """Tests for the update command."""
+
+    def test_update_help(self, runner):
+        """Test update command help."""
+        result = runner.invoke(cli, ["update", "--help"])
+
+        assert result.exit_code == 0
+        assert "Update tonie-api" in result.output or "Aktualisiert tonie-api" in result.output
+
+    def test_update_with_force_flag(self, runner):
+        """Test update command with --force flag."""
+        with patch("subprocess.run") as mock_run:
+            mock_run.return_value = MagicMock(stdout="Successfully installed", returncode=0)
+
+            result = runner.invoke(cli, ["update", "-f"])
+
+            assert result.exit_code == 0
+            mock_run.assert_called_once()
+            call_args = mock_run.call_args[0][0]  # Get the command list
+            assert "pip" in call_args[2]  # [sys.executable, "-m", "pip", ...]
+            assert "install" in call_args
+            assert "--upgrade" in call_args
+
+    def test_update_with_confirmation(self, runner):
+        """Test update command with user confirmation."""
+        with patch("subprocess.run") as mock_run:
+            mock_run.return_value = MagicMock(stdout="Successfully installed", returncode=0)
+
+            result = runner.invoke(cli, ["update"], input="y\n")
+
+            assert result.exit_code == 0
+            mock_run.assert_called_once()
+
+    def test_update_aborted(self, runner):
+        """Test update command aborted by user."""
+        result = runner.invoke(cli, ["update"], input="n\n")
+
+        assert result.exit_code == 1
+
+    def test_update_failure(self, runner):
+        """Test update command when pip fails."""
+        import subprocess
+
+        with patch("subprocess.run") as mock_run:
+            mock_run.side_effect = subprocess.CalledProcessError(
+                returncode=1,
+                cmd=["pip", "install"],
+                stderr="Permission denied",
+            )
+
+            result = runner.invoke(cli, ["update", "-f"])
+
+            assert result.exit_code == 1
+            assert "fehlgeschlagen" in result.output or "failed" in result.output

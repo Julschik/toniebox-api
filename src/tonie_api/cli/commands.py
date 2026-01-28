@@ -20,6 +20,8 @@ from tonie_api.cli.output import (
 )
 from tonie_api.exceptions import AuthenticationError, TonieAPIError
 
+REPO_URL = "git+https://github.com/Julschik/toniebox-api.git"
+
 CONFIG_DIR = Path.home() / ".config" / "tonie-api"
 CREDENTIALS_FILE = CONFIG_DIR / "credentials"
 
@@ -696,6 +698,36 @@ def _interactive_clear(api: TonieAPI, household_id: str) -> None:
     if click.confirm(t("cli.clear.confirm", count=tonie.chapters_present, name=tonie.name)):
         tonie = api.clear_chapters(household_id, tonie_id)
         print_success(t("cli.clear.success", name=tonie.name))
+
+
+@click.command()
+@click.option("--force", "-f", is_flag=True, help="Update without confirmation")
+@click.pass_context
+def update(ctx: click.Context, force: bool) -> None:
+    """Update tonie-api to the latest version from GitHub."""
+    import subprocess
+    import sys
+
+    if not force:
+        click.confirm(t("cli.update.confirm"), abort=True)
+
+    click.echo(t("cli.update.updating"))
+
+    try:
+        result = subprocess.run(  # noqa: S603 (REPO_URL is a trusted constant)
+            [sys.executable, "-m", "pip", "install", "--upgrade", REPO_URL],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        if ctx.obj.get("debug"):
+            click.echo(result.stdout)
+        print_success(t("cli.update.success"))
+        click.echo(t("cli.update.restart_hint"))
+    except subprocess.CalledProcessError as e:
+        error_msg = e.stderr.strip() if e.stderr else str(e)
+        print_error(t("cli.update.failed", error=error_msg))
+        ctx.exit(1)
 
 
 def _interactive_run_preset(api: TonieAPI) -> None:

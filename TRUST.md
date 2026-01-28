@@ -18,25 +18,26 @@ GitHub → Dein PC → Tonie Cloud API
 
 ### Wo werden deine Daten gespeichert?
 
-| Daten | Speicherort | Zugriff |
-|:------|:------------|:--------|
+| Daten             | Speicherort                       | Zugriff        |
+| :---------------- | :-------------------------------- | :------------- |
 | E-Mail & Passwort | `~/.config/tonie-api/credentials` | Nur du (0o600) |
-| OAuth-Token | Nur im Arbeitsspeicher | Temporär |
-| Audiodateien | Tonie Cloud (tonies.de) | Dein Account |
+| OAuth-Token       | Nur im Arbeitsspeicher            | Temporär       |
+| Audiodateien      | Tonie Cloud (tonies.de)           | Dein Account   |
 
 ### Kritische Code-Stellen zur Prüfung
 
-| Datei | Funktion |
-|:------|:---------|
-| `src/tonie_api/session.py` | Token-Anfrage an login.tonies.com |
-| `src/tonie_api/api.py` | Datei-Upload zu S3 |
-| `src/tonie_api/cli/commands.py` | Credential-Speicherung |
+| Datei                           | Funktion                          |
+| :------------------------------ | :-------------------------------- |
+| `src/tonie_api/session.py`      | Token-Anfrage an login.tonies.com |
+| `src/tonie_api/api.py`          | Datei-Upload zu S3                |
+| `src/tonie_api/cli/commands.py` | Credential-Speicherung            |
 
 ### Haftungsausschluss
 
 > ⚠️ **Inoffizieller Client** - Keine Verbindung zu tonies® oder Tonies SE.
 
 Nutzung auf eigene Gefahr. Der Autor übernimmt keine Haftung für:
+
 - Datenverlust
 - Account-Sperrungen
 - Schäden an Tonies oder Tonieboxen
@@ -66,25 +67,26 @@ GitHub → Your PC → Tonie Cloud API
 
 ### Where is your data stored?
 
-| Data | Location | Access |
-|:-----|:---------|:-------|
+| Data             | Location                          | Access           |
+| :--------------- | :-------------------------------- | :--------------- |
 | Email & Password | `~/.config/tonie-api/credentials` | You only (0o600) |
-| OAuth Token | Memory only | Temporary |
-| Audiofiles | Tonie Cloud (tonies.de) | Your account |
+| OAuth Token      | Memory only                       | Temporary        |
+| Audiofiles       | Tonie Cloud (tonies.de)           | Your account     |
 
 ### Critical Code Sections for Review
 
-| File | Function |
-|:-----|:---------|
-| `src/tonie_api/session.py` | Token request to login.tonies.com |
-| `src/tonie_api/api.py` | File upload to S3 |
-| `src/tonie_api/cli/commands.py` | Credential storage |
+| File                            | Function                          |
+| :------------------------------ | :-------------------------------- |
+| `src/tonie_api/session.py`      | Token request to login.tonies.com |
+| `src/tonie_api/api.py`          | File upload to S3                 |
+| `src/tonie_api/cli/commands.py` | Credential storage                |
 
 ### Disclaimer
 
 > ⚠️ **Unofficial client** - No affiliation with tonies® or Tonies SE.
 
 Use at your own risk. The author assumes no liability for:
+
 - Data loss
 - Account suspensions
 - Damage to Tonies or Tonieboxes

@@ -83,9 +83,9 @@ Pre-commit hooks will automatically check your code before each commit.
 
 This tool supports **any audio files** (music, audiobooks, podcasts, voice memos, etc.). Always use generic terms in documentation and UI text:
 
-| ❌ Don't use | ✅ Use instead |
-|--------------|----------------|
-| audiobook(s) | audio file(s) |
+| ❌ Don't use      | ✅ Use instead |
+| ----------------- | -------------- |
+| audiobook(s)      | audio file(s)  |
 | Hörbuch/Hörbücher | Audiodatei(en) |
 
 **Exception:** When explicitly listing multiple types (e.g. "audiobooks and music" / "Hörbücher und Musik"), that's correct.
@@ -116,10 +116,10 @@ This tool supports **any audio files** (music, audiobooks, podcasts, voice memos
 
 Extra care required when modifying:
 
-| File | Critical Area |
-|------|---------------|
-| `session.py` | Token handling, OAuth flow |
-| `api.py` | S3 upload, API requests |
+| File              | Critical Area                         |
+| ----------------- | ------------------------------------- |
+| `session.py`      | Token handling, OAuth flow            |
+| `api.py`          | S3 upload, API requests               |
 | `cli/commands.py` | Credential storage (`login`/`logout`) |
 
 ### Error Handling
