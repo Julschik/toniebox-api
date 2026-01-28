@@ -69,16 +69,17 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 | Befehl | Beschreibung |
 |:-------|:-------------|
-| `tonie login` | Zugangsdaten einrichten/ändern |
-| `tonie logout` | Zugangsdaten löschen |
-| `tonie me` | Zeigt deine Benutzerinfo |
-| `tonie households` | Listet alle deine Haushalte |
-| `tonie tonies` | Zeigt alle Creative Tonies |
-| `tonie upload DATEI TONIE-ID` | Lädt eine Audio-Datei auf einen Tonie |
-| `tonie shuffle TONIE-ID` | Mischt die Kapitelreihenfolge zufällig |
-| `tonie clear TONIE-ID --yes` | Löscht alle Kapitel vom Tonie |
-| `tonie config` | Zeigt Backend-Limits (Kapitel, Dauer, Dateigröße) |
-| `tonie status` | Prüft API-Erreichbarkeit |
+| `toniebox login` | Zugangsdaten einrichten/ändern |
+| `toniebox logout` | Zugangsdaten löschen |
+| `toniebox me` | Zeigt deine Benutzerinfo |
+| `toniebox households` | Listet alle deine Haushalte |
+| `toniebox tonies` | Zeigt alle Creative Tonies |
+| `toniebox upload DATEI TONIE-ID` | Lädt eine Audio-Datei auf einen Tonie |
+| `toniebox shuffle TONIE-ID` | Mischt die Kapitelreihenfolge zufällig |
+| `toniebox clear TONIE-ID --yes` | Löscht alle Kapitel vom Tonie |
+| `toniebox config` | Zeigt Backend-Limits (Kapitel, Dauer, Dateigröße) |
+| `toniebox status` | Prüft API-Erreichbarkeit |
+| `toniebox update [--force]` | Aktualisiert tonie-api auf die neueste Version |
 
 ---
 
@@ -101,8 +102,8 @@ tonie upload /Users/ich/Downloads/hoerbuch.mp3 CF12345678901234
 
 | Problem | Lösung |
 |:--------|:-------|
-| `tonie: command not found` | Terminal neu starten oder `source ~/.zshrc` |
-| `Authentication failed` | Zugangsdaten prüfen mit `tonie login` |
+| `toniebox: command not found` | Terminal neu starten oder `source ~/.zshrc` |
+| `Authentication failed` | Zugangsdaten prüfen mit `toniebox login` |
 | `No households found` | Account muss mindestens eine Toniebox haben |
 | Upload schlägt fehl | Dateiformat prüfen (MP3, M4A, WAV, OGG, FLAC) |
 | Tonie synchronisiert nicht | Tonie kurz auf Box stellen / WLAN Verbindung prüfen |
@@ -218,16 +219,17 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 | Command | Description |
 |:--------|:------------|
-| `tonie login` | Set up / change credentials |
-| `tonie logout` | Remove credentials |
-| `tonie me` | Show your user info |
-| `tonie households` | List all your households |
-| `tonie tonies` | Show all Creative Tonies |
-| `tonie upload FILE TONIE-ID` | Upload an audio file to a Tonie |
-| `tonie shuffle TONIE-ID` | Randomly shuffle chapter order |
-| `tonie clear TONIE-ID --yes` | Delete all chapters from Tonie |
-| `tonie config` | Show backend limits (chapters, duration, file size) |
-| `tonie status` | Check API availability |
+| `toniebox login` | Set up / change credentials |
+| `toniebox logout` | Remove credentials |
+| `toniebox me` | Show your user info |
+| `toniebox households` | List all your households |
+| `toniebox tonies` | Show all Creative Tonies |
+| `toniebox upload FILE TONIE-ID` | Upload an audio file to a Tonie |
+| `toniebox shuffle TONIE-ID` | Randomly shuffle chapter order |
+| `toniebox clear TONIE-ID --yes` | Delete all chapters from Tonie |
+| `toniebox config` | Show backend limits (chapters, duration, file size) |
+| `toniebox status` | Check API availability |
+| `toniebox update [--force]` | Update tonie-api to the latest version |
 
 ---
 
@@ -250,8 +252,8 @@ tonie upload /Users/me/Downloads/audiobook.mp3 CF12345678901234
 
 | Problem | Solution |
 |:--------|:---------|
-| `tonie: command not found` | Restart terminal or run `source ~/.zshrc` |
-| `Authentication failed` | Check credentials with `tonie login` |
+| `toniebox: command not found` | Restart terminal or run `source ~/.zshrc` |
+| `Authentication failed` | Check credentials with `toniebox login` |
 | `No households found` | Account needs at least one Toniebox |
 | Upload fails | Check file format (MP3, M4A, WAV, OGG, FLAC) |
 | Tonie doesn't sync | Place Tonie on box briefly |

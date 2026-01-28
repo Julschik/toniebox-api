@@ -37,17 +37,18 @@ pre-commit run -a
 pre-commit install
 
 # Run CLI
-poetry run tonie --help
-poetry run tonie me
-poetry run tonie households
-poetry run tonie tonies
-poetry run tonie upload /path/to/audio.mp3 TONIE_ID
-poetry run tonie shuffle TONIE_ID
-poetry run tonie clear TONIE_ID --yes
-poetry run tonie config
-poetry run tonie status
-poetry run tonie login
-poetry run tonie logout
+poetry run toniebox --help
+poetry run toniebox me
+poetry run toniebox households
+poetry run toniebox tonies
+poetry run toniebox upload /path/to/audio.mp3 TONIE_ID
+poetry run toniebox shuffle TONIE_ID
+poetry run toniebox clear TONIE_ID --yes
+poetry run toniebox config
+poetry run toniebox status
+poetry run toniebox login
+poetry run toniebox logout
+poetry run toniebox update
 ```
 
 ## Architecture
@@ -182,8 +183,8 @@ Commitlint validates on CI and via pre-commit hook.
 - [x] CLI Commands: `me`, `households`, `tonies`, `upload`, `shuffle`, `clear`, `config`, `status`, `login`, `logout`
 - [x] CLI Tests (`test_cli.py`) mit 31 Tests
 - [x] Quick Wins implementiert:
-  - [x] `tonie config` Command (zeigt API-Limits)
-  - [x] `tonie status` Command (API Health-Check)
+  - [x] `toniebox config` Command (zeigt API-Limits)
+  - [x] `toniebox status` Command (API Health-Check)
   - [x] Input-Validierung in `upload_to_s3()` (Datei-Existenz prüfen)
   - [x] `requests-oauthlib` Dependency entfernt
   - [x] `RateLimitError` mit `retry_after` Property erweitert

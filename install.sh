@@ -83,18 +83,18 @@ echo ""
 info "Jetzt richten wir deine Zugangsdaten ein..."
 echo ""
 
-if tonie login; then
+if toniebox login; then
     echo ""
     echo "========================================"
     echo -e "${GREEN}Alles fertig! Hier ist die Übersicht:${NC}"
     echo "========================================"
     echo ""
-    tonie --help
+    toniebox --help
     echo ""
-    echo -e "${GREEN}Tipp:${NC} Starte mit 'tonie tonies' um deine Tonies zu sehen."
+    echo -e "${GREEN}Tipp:${NC} Starte mit 'toniebox tonies' um deine Tonies zu sehen."
 else
     echo ""
-    echo -e "${YELLOW}Login übersprungen. Du kannst später 'tonie login' ausführen.${NC}"
+    echo -e "${YELLOW}Login übersprungen. Du kannst später 'toniebox login' ausführen.${NC}"
     echo ""
-    tonie --help
+    toniebox --help
 fi

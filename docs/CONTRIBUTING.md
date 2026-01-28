@@ -65,7 +65,7 @@ poetry run pytest -x
 pre-commit run -a
 
 # Test CLI locally
-poetry run tonie --help
+poetry run toniebox --help
 ```
 
 ## Code Style

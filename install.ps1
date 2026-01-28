@@ -78,19 +78,19 @@ Write-Host ""
 Write-Info "Jetzt richten wir deine Zugangsdaten ein..."
 Write-Host ""
 
-$loginResult = tonie login
+$loginResult = toniebox login
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
     Write-Host "========================================" -ForegroundColor Green
     Write-Host " Alles fertig! Hier ist die Uebersicht:" -ForegroundColor Green
     Write-Host "========================================" -ForegroundColor Green
     Write-Host ""
-    tonie --help
+    toniebox --help
     Write-Host ""
-    Write-Host "Tipp: Starte mit 'tonie tonies' um deine Tonies zu sehen." -ForegroundColor Green
+    Write-Host "Tipp: Starte mit 'toniebox tonies' um deine Tonies zu sehen." -ForegroundColor Green
 } else {
     Write-Host ""
-    Write-Host "Login uebersprungen. Du kannst spaeter 'tonie login' ausfuehren." -ForegroundColor Yellow
+    Write-Host "Login uebersprungen. Du kannst spaeter 'toniebox login' ausfuehren." -ForegroundColor Yellow
     Write-Host ""
-    tonie --help
+    toniebox --help
 }
