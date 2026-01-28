@@ -7,8 +7,6 @@ import logging
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from textual.reactive import reactive
-
 if TYPE_CHECKING:
     from tonie_api.api import TonieAPI
     from tonie_api.models import Config, CreativeTonie, Household, User
@@ -21,23 +19,22 @@ CREDENTIALS_FILE = CONFIG_DIR / "credentials"
 
 
 class AppState:
-    """Centralized application state with reactive attributes.
+    """Centralized application state.
 
     Manages authentication state, API data, and user preferences.
-    Uses reactive attributes for automatic UI updates.
     """
-
-    is_authenticated: reactive[bool] = reactive(False)  # noqa: FBT003
-    user: reactive[User | None] = reactive(None)
-    households: reactive[list[Household]] = reactive([])
-    current_household_id: reactive[str | None] = reactive(None)
-    tonies: reactive[list[CreativeTonie]] = reactive([])
-    config: reactive[Config | None] = reactive(None)
-    is_loading: reactive[bool] = reactive(False)  # noqa: FBT003
 
     def __init__(self) -> None:
         """Initialize application state."""
+        self.is_authenticated: bool = False
+        self.user: User | None = None
+        self.households: list[Household] = []
+        self.current_household_id: str | None = None
+        self.tonies: list[CreativeTonie] = []
+        self.config: Config | None = None
+        self.is_loading: bool = False
         self.api: TonieAPI | None = None
+        self._saved_household_id: str | None = None
         self._load_preferences()
 
     def _load_preferences(self) -> None:

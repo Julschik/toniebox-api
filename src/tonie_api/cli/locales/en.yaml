@@ -166,13 +166,13 @@ tui:
     select_household: "Select household"
     refresh: "Refresh"
     no_selection: "Select a Tonie from the list"
-    chapters_for: "Chapters for \"{name}\":"
+    chapters_for: 'Chapters for "{name}":'
     shuffle: "Shuffle"
     clear: "Clear"
     upload: "Upload"
-    shuffle_success: "Shuffled chapters on \"{name}\""
-    clear_success: "Cleared chapters from \"{name}\""
-    clear_confirm: "Clear {count} chapters from \"{name}\"?"
+    shuffle_success: 'Shuffled chapters on "{name}"'
+    clear_success: 'Cleared chapters from "{name}"'
+    clear_confirm: 'Clear {count} chapters from "{name}"?'
     min_chapters: "At least 2 chapters required for shuffling"
     no_chapters: "No chapters to clear"
     select_first: "Please select a Tonie first"
@@ -206,11 +206,11 @@ tui:
     delete: "Delete"
     empty: "No presets found."
     create_hint: "Create presets with: toniebox preset create <name>"
-    running: "Starting preset \"{name}\"..."
-    success: "Preset \"{name}\": {success}/{total} actions successful"
-    partial_fail: "Preset \"{name}\": {success}/{total} successful"
-    delete_confirm: "Delete preset \"{name}\" with {count} actions?"
-    deleted: "Preset \"{name}\" deleted"
+    running: 'Starting preset "{name}"...'
+    success: 'Preset "{name}": {success}/{total} actions successful'
+    partial_fail: 'Preset "{name}": {success}/{total} successful'
+    delete_confirm: 'Delete preset "{name}" with {count} actions?'
+    deleted: 'Preset "{name}" deleted'
     select_first: "Please select a preset first"
 
   error:

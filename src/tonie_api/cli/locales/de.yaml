@@ -166,13 +166,13 @@ tui:
     select_household: "Haushalt wählen"
     refresh: "Aktualisieren"
     no_selection: "Wähle einen Tonie aus der Liste"
-    chapters_for: "Kapitel für \"{name}\":"
+    chapters_for: 'Kapitel für "{name}":'
     shuffle: "Mischen"
     clear: "Löschen"
     upload: "Upload"
-    shuffle_success: "Kapitel von \"{name}\" gemischt"
-    clear_success: "Kapitel von \"{name}\" gelöscht"
-    clear_confirm: "{count} Kapitel von \"{name}\" löschen?"
+    shuffle_success: 'Kapitel von "{name}" gemischt'
+    clear_success: 'Kapitel von "{name}" gelöscht'
+    clear_confirm: '{count} Kapitel von "{name}" löschen?'
     min_chapters: "Mindestens 2 Kapitel zum Mischen erforderlich"
     no_chapters: "Keine Kapitel zum Löschen vorhanden"
     select_first: "Bitte zuerst einen Tonie auswählen"
@@ -206,11 +206,11 @@ tui:
     delete: "Löschen"
     empty: "Keine Presets vorhanden."
     create_hint: "Erstelle Presets mit: toniebox preset create <name>"
-    running: "Starte Preset \"{name}\"..."
-    success: "Preset \"{name}\": {success}/{total} Aktionen erfolgreich"
-    partial_fail: "Preset \"{name}\": {success}/{total} erfolgreich"
-    delete_confirm: "Preset \"{name}\" mit {count} Aktionen löschen?"
-    deleted: "Preset \"{name}\" gelöscht"
+    running: 'Starte Preset "{name}"...'
+    success: 'Preset "{name}": {success}/{total} Aktionen erfolgreich'
+    partial_fail: 'Preset "{name}": {success}/{total} erfolgreich'
+    delete_confirm: 'Preset "{name}" mit {count} Aktionen löschen?'
+    deleted: 'Preset "{name}" gelöscht'
     select_first: "Bitte zuerst ein Preset auswählen"
 
   error:

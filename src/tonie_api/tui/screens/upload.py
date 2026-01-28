@@ -23,6 +23,8 @@ from tonie_api.exceptions import AuthenticationError, TonieAPIError
 from tonie_api.tui.widgets.error_modal import ErrorModal
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from textual.app import ComposeResult
     from textual.binding import BindingType
 
@@ -243,7 +245,7 @@ class UploadScreen(Screen):
                 def make_progress_callback(
                     idx: int,
                     fname: str,
-                ) -> callable:
+                ) -> Callable[[int, int], None]:
                     def progress_callback(bytes_sent: int, total_bytes: int) -> None:
                         progress = (idx + (bytes_sent / total_bytes)) / total_files
                         app.call_from_thread(
