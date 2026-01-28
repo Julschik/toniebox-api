@@ -44,6 +44,7 @@ class TestConfig:
         assert config.stage_warning is False
         assert config.paypal_client_id == "paypal-id"
         assert config.sso_enabled is True
+        assert config.features == []  # defaults to empty list
 
     def test_parse_with_snake_case(self):
         data = {
@@ -60,6 +61,39 @@ class TestConfig:
         config = Config.model_validate(data)
         assert config.unicode_locales == ["de-DE"]
         assert config.max_chapters == 99
+
+    def test_parse_without_paypal_with_features(self):
+        """Test parsing new API format without paypalClientId but with features."""
+        data = {
+            "locales": ["de", "en"],
+            "unicodeLocales": ["de-DE", "en-US"],
+            "maxChapters": 99,
+            "maxSeconds": 5400,
+            "maxBytes": 536870912,
+            "accepts": ["audio/mpeg", "audio/ogg"],
+            "stageWarning": False,
+            "ssoEnabled": True,
+            "features": ["feature1", "feature2"],
+        }
+        config = Config.model_validate(data)
+        assert config.paypal_client_id is None
+        assert config.features == ["feature1", "feature2"]
+
+    def test_parse_defaults(self):
+        """Test that optional fields default correctly."""
+        data = {
+            "locales": ["de"],
+            "unicodeLocales": ["de-DE"],
+            "maxChapters": 99,
+            "maxSeconds": 5400,
+            "maxBytes": 536870912,
+            "accepts": ["audio/mpeg"],
+            "stageWarning": False,
+            "ssoEnabled": True,
+        }
+        config = Config.model_validate(data)
+        assert config.paypal_client_id is None
+        assert config.features == []
 
 
 class TestHousehold:

@@ -25,8 +25,9 @@ class Config(BaseModel):
     max_bytes: int = Field(alias="maxBytes")
     accepts: list[str]
     stage_warning: bool = Field(alias="stageWarning")
-    paypal_client_id: str = Field(alias="paypalClientId")
+    paypal_client_id: str | None = Field(default=None, alias="paypalClientId")
     sso_enabled: bool = Field(alias="ssoEnabled")
+    features: list[str] = Field(default_factory=list)
 
 
 class Household(BaseModel):
